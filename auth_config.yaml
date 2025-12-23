@@ -1,0 +1,20 @@
+# Authentication Configuration for Easy Data
+# This file stores user credentials and settings
+
+credentials:
+  usernames:
+    admin:
+      email: admin@easydata.com
+      name: Admin User
+      password: $2b$12$PLACEHOLDER_ADMIN_HASH
+      role: admin
+      plan: enterprise
+
+cookie:
+  expiry_days: 30
+  key: easy_data_signature_key_2024
+  name: easy_data_auth
+
+preauthorized:
+  emails:
+    - admin@easydata.com
