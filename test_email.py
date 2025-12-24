@@ -1,12 +1,20 @@
+# test_email.py - Test script for email functionality
+# Usage: Set RESEND_API_KEY environment variable first
+
 import resend
 import os
 
-# Manual Config for Testing
-API_KEY = "re_jDmamPb1_3SWgAXdo9NNHrMy8JjxQRcVf"
+# Get API key from environment - NEVER hardcode!
+API_KEY = os.getenv('RESEND_API_KEY')
 FROM_EMAIL = "onboarding@resend.dev"
-TO_EMAIL = "sameh599samir@gmail.com" # المسموح به حالياً فقط في Resend
+TO_EMAIL = os.getenv('TEST_EMAIL', 'your_email@example.com')
 
 def test_email():
+    if not API_KEY:
+        print("❌ Error: RESEND_API_KEY environment variable not set")
+        print("   Set it with: export RESEND_API_KEY='your_key_here'")
+        return False
+    
     print(f"Testing email from {FROM_EMAIL} to {TO_EMAIL}...")
     resend.api_key = API_KEY
     

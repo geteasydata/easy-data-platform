@@ -51,9 +51,8 @@ class AIEngine:
         
         # Try Gemini as fallback
         if not self.is_configured and HAS_GEMINI:
-            # Default Gemini key (user provided)
-            DEFAULT_GEMINI_KEY = "AIzaSyC_0gsd0E7_Xf3g64ReTlVCvrgM7m2spwE"
-            gemini_key = api_key or os.getenv('GEMINI_API_KEY') or DEFAULT_GEMINI_KEY
+            # Get Gemini key from environment or st.secrets - NEVER hardcode!
+            gemini_key = api_key or os.getenv('GEMINI_API_KEY')
             if gemini_key:
                 try:
                     genai.configure(api_key=gemini_key)
