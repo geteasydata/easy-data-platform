@@ -40,6 +40,7 @@ sqlalchemy>=2.0.0
 
 # Authentication
 bcrypt>=4.0.0
+pyyaml>=6.0.0
 
 # ===========================================
 # Platform Infrastructure (SaaS)
