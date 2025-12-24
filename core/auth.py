@@ -1,19 +1,31 @@
 """
 Authentication Module for Easy Data
 Handles user login, registration, and session management
+Now integrated with Supabase, Stripe, and Email services
 """
 
 import streamlit as st
 import yaml
 import bcrypt
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Dict, Optional, Tuple
 import json
+import secrets
 
-# Path to config files
+# Import new infrastructure modules
+try:
+    from core import database as db
+    from core import email_service as email
+    from core import payment
+    INFRASTRUCTURE_AVAILABLE = True
+except ImportError:
+    INFRASTRUCTURE_AVAILABLE = False
+
+# Path to config files (fallback for local mode)
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'auth_config.yaml')
 USERS_DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'user_data', 'users.json')
+TOKENS_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'user_data', 'tokens.json')
 
 
 def ensure_user_data_dir():
@@ -52,11 +64,31 @@ def save_users(users_data: Dict):
         json.dump(users_data, f, ensure_ascii=False, indent=2)
 
 
-def register_user(username: str, email: str, password: str, name: str) -> Tuple[bool, str]:
+def register_user(username: str, email_addr: str, password: str, name: str) -> Tuple[bool, str]:
     """
     Register a new user
     Returns: (success, message)
     """
+    # Try Supabase first if available
+    if INFRASTRUCTURE_AVAILABLE and db.is_configured():
+        success, message, user_data = db.create_user(username, email_addr, password, name)
+        
+        # Send welcome email if registration succeeded
+        if success and user_data:
+            try:
+                from core import email_service
+                email_service.send_welcome_email(
+                    to_email=email_addr,
+                    name=name,
+                    app_url="http://localhost:8501", # Will be updated for production
+                    lang="ar" if "ar" in message else "en"
+                )
+            except Exception as e:
+                # Don't block registration if email fails
+                print(f"Failed to send welcome email: {str(e)}")
+                
+        return success, message
+
     users_data = load_users()
     
     # Check if username exists
@@ -65,12 +97,12 @@ def register_user(username: str, email: str, password: str, name: str) -> Tuple[
     
     # Check if email exists
     for user in users_data["users"].values():
-        if user.get("email", "").lower() == email.lower():
+        if user.get("email", "").lower() == email_addr.lower():
             return False, "البريد الإلكتروني مستخدم بالفعل | Email already in use"
     
     # Create new user
     users_data["users"][username] = {
-        "email": email,
+        "email": email_addr,
         "name": name,
         "password": hash_password(password),
         "plan": "free",
@@ -89,6 +121,10 @@ def authenticate_user(username: str, password: str) -> Tuple[bool, Optional[Dict
     Authenticate a user
     Returns: (success, user_data, message)
     """
+    # Try Supabase first if available
+    if INFRASTRUCTURE_AVAILABLE and db.is_configured():
+        return db.authenticate_user(username, password)
+
     users_data = load_users()
     
     # Find user (case-insensitive)
@@ -423,3 +459,358 @@ def can_access_feature(feature: str) -> bool:
     
     allowed_plans = feature_access.get(feature, [])
     return plan in allowed_plans or plan == "admin"
+
+
+# ============================================
+# New Infrastructure Integration
+# ============================================
+
+def register_user_v2(username: str, email: str, password: str, name: str, lang: str = "ar") -> Tuple[bool, str]:
+    """
+    Register a new user with email verification
+    Uses Supabase if available, falls back to local JSON
+    """
+    if INFRASTRUCTURE_AVAILABLE and db.is_configured():
+        # Use Supabase
+        success, message, user_data = db.create_user(username, email, password, name)
+        
+        if success and email.is_configured():
+            # Generate verification token
+            token = secrets.token_urlsafe(32)
+            save_verification_token(email, token, "verify")
+            
+            # Send verification email
+            app_url = get_app_url()
+            verify_url = f"{app_url}?verify={token}"
+            email.send_verification_email(email, name, verify_url, lang)
+        
+        return success, message
+    else:
+        # Fallback to original local registration
+        return register_user(username, email, password, name)
+
+
+def save_verification_token(email: str, token: str, token_type: str):
+    """Save verification/reset token"""
+    ensure_user_data_dir()
+    
+    tokens = {}
+    if os.path.exists(TOKENS_PATH):
+        with open(TOKENS_PATH, 'r', encoding='utf-8') as f:
+            tokens = json.load(f)
+    
+    tokens[token] = {
+        "email": email,
+        "type": token_type,
+        "created_at": datetime.now().isoformat(),
+        "expires_at": (datetime.now() + timedelta(hours=24 if token_type == "verify" else 1)).isoformat()
+    }
+    
+    with open(TOKENS_PATH, 'w', encoding='utf-8') as f:
+        json.dump(tokens, f)
+
+
+def verify_token(token: str) -> Tuple[bool, str, str]:
+    """
+    Verify a token
+    Returns: (valid, email, token_type)
+    """
+    if not os.path.exists(TOKENS_PATH):
+        return False, "", ""
+    
+    with open(TOKENS_PATH, 'r', encoding='utf-8') as f:
+        tokens = json.load(f)
+    
+    if token not in tokens:
+        return False, "", ""
+    
+    token_data = tokens[token]
+    expires_at = datetime.fromisoformat(token_data["expires_at"])
+    
+    if datetime.now() > expires_at:
+        # Token expired, remove it
+        del tokens[token]
+        with open(TOKENS_PATH, 'w', encoding='utf-8') as f:
+            json.dump(tokens, f)
+        return False, "", ""
+    
+    return True, token_data["email"], token_data["type"]
+
+
+def consume_token(token: str) -> bool:
+    """Remove a used token"""
+    if not os.path.exists(TOKENS_PATH):
+        return False
+    
+    with open(TOKENS_PATH, 'r', encoding='utf-8') as f:
+        tokens = json.load(f)
+    
+    if token in tokens:
+        del tokens[token]
+        with open(TOKENS_PATH, 'w', encoding='utf-8') as f:
+            json.dump(tokens, f)
+        return True
+    return False
+
+
+def request_password_reset(email_address: str, lang: str = "ar") -> Tuple[bool, str]:
+    """
+    Request password reset
+    Sends reset email if user exists
+    """
+    if INFRASTRUCTURE_AVAILABLE and db.is_configured():
+        user = db.get_user(email=email_address)
+    else:
+        user = None
+        users_data = load_users()
+        for uname, udata in users_data["users"].items():
+            if udata.get("email", "").lower() == email_address.lower():
+                user = {**udata, "username": uname, "name": udata.get("name", uname)}
+                break
+    
+    if not user:
+        # Don't reveal if email exists
+        return True, "إذا كان البريد مسجلاً، ستتلقى رابط إعادة التعيين | If the email is registered, you'll receive a reset link"
+    
+    if INFRASTRUCTURE_AVAILABLE and email.is_configured():
+        token = secrets.token_urlsafe(32)
+        save_verification_token(email_address, token, "reset")
+        
+        app_url = get_app_url()
+        reset_url = f"{app_url}?reset={token}"
+        email.send_password_reset_email(email_address, user.get("name", ""), reset_url, lang)
+    
+    return True, "إذا كان البريد مسجلاً، ستتلقى رابط إعادة التعيين | If the email is registered, you'll receive a reset link"
+
+
+def reset_password(token: str, new_password: str) -> Tuple[bool, str]:
+    """Reset password using token"""
+    valid, email_address, token_type = verify_token(token)
+    
+    if not valid or token_type != "reset":
+        return False, "رابط غير صالح أو منتهي الصلاحية | Invalid or expired link"
+    
+    if len(new_password) < 6:
+        return False, "كلمة المرور قصيرة جداً | Password too short"
+    
+    if INFRASTRUCTURE_AVAILABLE and db.is_configured():
+        user = db.get_user(email=email_address)
+        if user:
+            db.update_password(user["id"], new_password)
+    else:
+        users_data = load_users()
+        for uname, udata in users_data["users"].items():
+            if udata.get("email", "").lower() == email_address.lower():
+                users_data["users"][uname]["password"] = hash_password(new_password)
+                save_users(users_data)
+                break
+    
+    consume_token(token)
+    return True, "تم تغيير كلمة المرور بنجاح | Password changed successfully"
+
+
+def verify_email(token: str) -> Tuple[bool, str]:
+    """Verify email using token"""
+    valid, email_address, token_type = verify_token(token)
+    
+    if not valid or token_type != "verify":
+        return False, "رابط غير صالح أو منتهي الصلاحية | Invalid or expired link"
+    
+    if INFRASTRUCTURE_AVAILABLE and db.is_configured():
+        user = db.get_user(email=email_address)
+        if user:
+            db.verify_email(user["id"])
+    else:
+        users_data = load_users()
+        for uname, udata in users_data["users"].items():
+            if udata.get("email", "").lower() == email_address.lower():
+                users_data["users"][uname]["email_verified"] = True
+                save_users(users_data)
+                break
+    
+    consume_token(token)
+    return True, "تم تأكيد البريد بنجاح! | Email verified successfully!"
+
+
+def get_app_url() -> str:
+    """Get the application URL"""
+    try:
+        # Try to get from Streamlit secrets
+        return st.secrets.get("APP_URL", "https://geteasydata.streamlit.app")
+    except:
+        return os.environ.get("APP_URL", "https://geteasydata.streamlit.app")
+
+
+def get_stripe_customer_id(username: str) -> Optional[str]:
+    """Get or create Stripe customer ID for user"""
+    if not INFRASTRUCTURE_AVAILABLE:
+        return None
+    
+    if db.is_configured():
+        user = db.get_user(username=username)
+        if user and user.get("stripe_customer_id"):
+            return user["stripe_customer_id"]
+        
+        # Create new Stripe customer
+        if user and payment.is_stripe_configured():
+            customer_id = payment.create_customer(
+                email=user.get("email", ""),
+                name=user.get("name", username),
+                metadata={"username": username}
+            )
+            if customer_id:
+                db.update_user(user["id"], {"stripe_customer_id": customer_id})
+                return customer_id
+    
+    return None
+
+
+def show_upgrade_page(lang: str = "ar"):
+    """Show upgrade page with pricing and checkout"""
+    st.markdown("## " + ("🚀 ترقية حسابك" if lang == "ar" else "🚀 Upgrade Your Account"))
+    
+    if not INFRASTRUCTURE_AVAILABLE or not payment.is_stripe_configured():
+        st.warning("نظام الدفع غير مفعل حالياً" if lang == "ar" else "Payment system is not currently active")
+        return
+    
+    # Show pricing cards
+    payment.show_pricing_cards(lang)
+    
+    # Handle upgrade
+    username = st.session_state.get("username")
+    if username and st.session_state.get("show_upgrade_modal"):
+        customer_id = get_stripe_customer_id(username)
+        if customer_id:
+            app_url = get_app_url()
+            payment.show_upgrade_modal(
+                customer_id=customer_id,
+                success_url=f"{app_url}?payment=success",
+                cancel_url=f"{app_url}?payment=cancelled",
+                lang=lang
+            )
+
+
+def handle_payment_callback():
+    """Handle payment success/cancel callbacks"""
+    if "payment" in st.query_params:
+        status = st.query_params["payment"]
+        
+        if status == "success":
+            st.success("🎉 تم الدفع بنجاح! تم ترقية حسابك | Payment successful! Your account has been upgraded")
+            
+            # Refresh user data
+            username = st.session_state.get("username")
+            if username and INFRASTRUCTURE_AVAILABLE and payment.is_stripe_configured():
+                customer_id = get_stripe_customer_id(username)
+                if customer_id:
+                    sub_status = payment.get_subscription_status(customer_id)
+                    if sub_status["plan"] != "free":
+                        upgrade_plan(username, sub_status["plan"])
+                        st.session_state["user_data"]["plan"] = sub_status["plan"]
+        
+        elif status == "cancelled":
+            st.info("تم إلغاء الدفع | Payment was cancelled")
+        
+        # Clear query params
+        st.query_params.clear()
+
+
+def handle_verification_callback():
+    """Handle email verification callbacks"""
+    if "verify" in st.query_params:
+        token = st.query_params["verify"]
+        success, message = verify_email(token)
+        
+        if success:
+            st.success(message)
+        else:
+            st.error(message)
+        
+        st.query_params.clear()
+    
+    if "reset" in st.query_params:
+        token = st.query_params["reset"]
+        valid, email_address, token_type = verify_token(token)
+        
+        if valid and token_type == "reset":
+            st.session_state["reset_token"] = token
+            st.session_state["show_reset_form"] = True
+        else:
+            st.error("رابط غير صالح أو منتهي الصلاحية | Invalid or expired link")
+        
+        st.query_params.clear()
+
+
+def show_reset_password_form(lang: str = "ar"):
+    """Show password reset form"""
+    if not st.session_state.get("show_reset_form"):
+        return
+    
+    st.markdown("### 🔐 " + ("إعادة تعيين كلمة المرور" if lang == "ar" else "Reset Password"))
+    
+    with st.form("reset_password_form"):
+        new_password = st.text_input(
+            "كلمة المرور الجديدة" if lang == "ar" else "New Password",
+            type="password"
+        )
+        confirm_password = st.text_input(
+            "تأكيد كلمة المرور" if lang == "ar" else "Confirm Password",
+            type="password"
+        )
+        
+        submit = st.form_submit_button(
+            "تغيير كلمة المرور" if lang == "ar" else "Change Password",
+            use_container_width=True
+        )
+        
+        if submit:
+            if new_password != confirm_password:
+                st.error("كلمات المرور غير متطابقة | Passwords don't match")
+            elif len(new_password) < 6:
+                st.error("كلمة المرور قصيرة | Password too short")
+            else:
+                token = st.session_state.get("reset_token")
+                success, message = reset_password(token, new_password)
+                
+                if success:
+                    st.success(message)
+                    st.session_state["show_reset_form"] = False
+                    st.session_state["reset_token"] = None
+                else:
+                    st.error(message)
+
+
+def show_forgot_password_link(lang: str = "ar"):
+    """Show forgot password link in login form"""
+    if st.button("🔑 " + ("نسيت كلمة المرور؟" if lang == "ar" else "Forgot Password?"), key="forgot_password"):
+        st.session_state["show_forgot_password"] = True
+
+
+def show_forgot_password_form(lang: str = "ar"):
+    """Show forgot password request form"""
+    if not st.session_state.get("show_forgot_password"):
+        return
+    
+    st.markdown("### 📧 " + ("استعادة كلمة المرور" if lang == "ar" else "Password Recovery"))
+    
+    with st.form("forgot_password_form"):
+        email_input = st.text_input(
+            "البريد الإلكتروني" if lang == "ar" else "Email",
+            placeholder="email@example.com"
+        )
+        
+        submit = st.form_submit_button(
+            "إرسال رابط الاستعادة" if lang == "ar" else "Send Reset Link",
+            use_container_width=True
+        )
+        
+        if submit:
+            if email_input:
+                success, message = request_password_reset(email_input, lang)
+                st.info(message)
+                st.session_state["show_forgot_password"] = False
+            else:
+                st.warning("الرجاء إدخال البريد الإلكتروني | Please enter email")
+    
+    if st.button("◀ " + ("رجوع" if lang == "ar" else "Back")):
+        st.session_state["show_forgot_password"] = False

@@ -31,6 +31,7 @@ from core.data_loader import load_uploaded_file
 from core.auto_ml import AutoML
 from core.ai_ensemble import get_ensemble
 from core.chief_data_scientist import get_chief_data_scientist, ApprovalStatus
+import core.auth as auth
 from reports.excel_output import create_excel_report
 from reports.powerbi_export import create_powerbi_package
 from reports.notebook_generator import generate_notebook, get_notebook_bytes
@@ -206,8 +207,10 @@ def main():
     
     # Sidebar Language Switcher - REMOVED for Landing Page
     # (Will be available inside the apps if needed, or we keep top toggle globally)
-
-
+    
+    # Authenticate User
+    if not auth.require_auth(st.session_state.lang):
+        return
 
     lang = st.session_state.lang
 
