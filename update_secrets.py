@@ -1,25 +1,29 @@
+# update_secrets.py - TEMPLATE ONLY
+# This file creates a template for secrets.toml
+# DO NOT put actual API keys here!
 
 import os
 
 content = """# .streamlit/secrets.toml
-# These keys are for LOCAL development only.
+# Fill in your actual API keys below.
+# NEVER commit real keys to version control!
 
 [api_keys]
-GROQ_API_KEY = "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"
-DEEPSEEK_API_KEY = "sk-0d8b9806c944495387bd466460a53932"
-GEMINI_API_KEY = "AIzaSyC_0gsd0E7_Xf3g64ReTlVCvrgM7m2spwE"
+GROQ_API_KEY = "your_groq_api_key_here"
+DEEPSEEK_API_KEY = "your_deepseek_api_key_here"
+GEMINI_API_KEY = "your_gemini_api_key_here"
 
 [supabase]
-SUPABASE_URL = "https://banmjznaaunsnlerzqfg.supabase.co"
-SUPABASE_KEY = "sb_publishable_CowgsCfN6xjd37B3IoVLBg_omAs2HoQ"
+SUPABASE_URL = "https://your-project.supabase.co"
+SUPABASE_KEY = "your_supabase_anon_key_here"
 
 [email]
-# SendGrid or Resend API Key
-# SENDGRID_API_KEY = "SG.your_key_here"
+EMAIL_PROVIDER = "resend"
+RESEND_API_KEY = "your_resend_api_key_here"
 EMAIL_FROM = "noreply@geteasydata.com"
 
 [payment]
-# Paddle or LemonSqueezy Keys (Pending Approval)
+# Paddle or LemonSqueezy Keys
 # PADDLE_VENDOR_ID = "..."
 # PADDLE_API_KEY = "..."
 """
@@ -27,4 +31,4 @@ EMAIL_FROM = "noreply@geteasydata.com"
 with open(".streamlit/secrets.toml", "w", encoding="utf-8") as f:
     f.write(content)
 
-print("secrets.toml updated successfully")
+print("secrets.toml template created - please fill in your actual keys!")

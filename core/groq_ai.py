@@ -30,9 +30,9 @@ class GroqAI:
     Blazingly fast with free tier support.
     """
     
-    # Default API keys (user provided)
-    DEFAULT_GROQ_KEY = "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"
-    DEFAULT_DEEPSEEK_KEY = "sk-0d8b9806c944495387bd466460a53932"
+    # API keys must come from environment or st.secrets - NEVER hardcode!
+    DEFAULT_GROQ_KEY = None
+    DEFAULT_DEEPSEEK_KEY = None
     
     def __init__(self, api_key: Optional[str] = None, deepseek_key: Optional[str] = None):
         """
