@@ -23,7 +23,9 @@ dist/
 .idea/
 
 # Easy Data specific
-reports/
+reports/*.xlsx
+reports/*.pdf
+reports/*.docx
 *.xlsx
 *.csv
 *.pdf
