@@ -54,9 +54,14 @@ for p in [root_path, brain_path, analyst_path]:
     if os.path.exists(p) and p not in sys.path:
         sys.path.append(p)
 
-from data_science_master_system.logic import (
-    AnalyticalLogic, EthicalLogic, EngineeringLogic, CausalLogic
-)
+# Optional: data_science_master_system (not required for cloud deployment)
+try:
+    from data_science_master_system.logic import (
+        AnalyticalLogic, EthicalLogic, EngineeringLogic, CausalLogic
+    )
+    HAS_MASTER_SYSTEM = True
+except ImportError:
+    HAS_MASTER_SYSTEM = False
 
 # Page Config
 st.set_page_config(
