@@ -222,173 +222,162 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
     if st.session_state.get("authenticated", False):
         return st.session_state.get("user_data")
     
-    # Beautiful full-page auth design with gradient background
+
+    # Casdoor-inspired Design
     st.markdown("""
     <style>
-    /* Full page gradient background */
+    /* 1. Cinematic Background */
     .stApp {
-        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #4c1d95 50%, #5b21b6 75%, #1e1b4b 100%) !important;
-        background-size: 400% 400% !important;
-        animation: gradientShift 15s ease infinite !important;
+        background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
     }
     
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    
-    /* Overlay with subtle pattern */
+    /* Overlay to ensure text readability if needed (optional) */
     .stApp::before {
         content: '';
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: 
-            radial-gradient(ellipse at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.2) 0%, transparent 50%),
-            radial-gradient(ellipse at 40% 40%, rgba(99, 102, 241, 0.15) 0%, transparent 40%);
+        background: rgba(0, 0, 0, 0.2); /* Slight tint */
         pointer-events: none;
         z-index: 0;
     }
-    
-    /* Hide default Streamlit elements */
+
+    /* Hide default elements */
     header[data-testid="stHeader"] { display: none !important; }
     footer { display: none !important; }
+    div[data-testid="stDecoration"] { display: none !important; }
+    
     .main .block-container {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
+        padding: 0 !important;
         max-width: 100% !important;
-        padding: 1rem !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh; /* Full viewport height */
     }
-    
-    /* Auth card container */
+
+    /* 2. The Clean White Card */
     .auth-card {
-        max-width: 420px;
-        margin: 2rem auto;
-        padding: 2.5rem;
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 24px;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        box-shadow: 
-            0 25px 50px -12px rgba(0, 0, 0, 0.5),
-            0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-        position: relative;
-        z-index: 1;
-    }
-    
-    /* Logo and title */
-    .auth-logo {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 3rem;
+        border-radius: 10px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        width: 100%;
+        max-width: 450px; /* Specific width like the image */
+        margin: auto;
         text-align: center;
-        font-size: 3rem;
-        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 10;
+        border-top: 5px solid #6366f1; /* Top accent brand color */
+    }
+
+    /* Logo & Title */
+    .auth-logo {
+        font-size: 2.5rem;
+        margin-bottom: 0px;
+        display: inline-block;
     }
     
     .auth-title {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 50%, #8b5cf6 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #1e293b;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 1.8rem;
         margin-bottom: 0.5rem;
-        letter-spacing: -0.5px;
     }
     
-    .auth-subtitle {
-        text-align: center;
-        color: rgba(203, 213, 225, 0.8);
-        font-size: 0.95rem;
-        margin-bottom: 2rem;
+    /* Tabs Customization (To look like the internal menu) */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 20px;
+        background: transparent;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 0;
+        margin-bottom: 1.5rem;
+        justify-content: center;
     }
-    
-    /* Form styling */
-    .stTextInput > div > div > input {
-        background: rgba(255, 255, 255, 0.06) !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
-        border-radius: 12px !important;
-        color: #f1f5f9 !important;
-        padding: 0.75rem 1rem !important;
-        font-size: 0.95rem !important;
-        transition: all 0.2s ease !important;
-    }
-    
-    .stTextInput > div > div > input:focus {
-        border-color: rgba(139, 92, 246, 0.6) !important;
-        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
-    }
-    
-    .stTextInput > div > div > input::placeholder {
-        color: rgba(148, 163, 184, 0.6) !important;
-    }
-    
-    /* Button styling */
-    .stButton > button {
-        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
-        color: white !important;
+
+    .stTabs [data-baseweb="tab"] {
+        background: transparent !important;
         border: none !important;
-        border-radius: 12px !important;
-        padding: 0.75rem 1.5rem !important;
+        color: #64748b !important;
         font-weight: 600 !important;
+        padding-bottom: 10px !important;
         font-size: 1rem !important;
-        box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4) !important;
-        transition: all 0.2s ease !important;
     }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5) !important;
+
+    .stTabs [aria-selected="true"] {
+        color: #6366f1 !important; /* Brand Purple */
+        border-bottom: 2px solid #6366f1 !important;
     }
-    
-    /* Guest button different style */
-    .guest-btn button {
-        background: rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+
+    /* Inputs - Clean & Light */
+    .stTextInput > div > div > input {
+        background-color: white !important;
+        color: #334155 !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 6px !important;
+        padding: 0.8rem 1rem !important;
+        font-size: 0.95rem !important;
         box-shadow: none !important;
     }
     
-    .guest-btn button:hover {
-        background: rgba(255, 255, 255, 0.15) !important;
-        border-color: rgba(255, 255, 255, 0.3) !important;
-        opacity: 1;
+    .stTextInput > div > div > input:focus {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
     }
-    
-    /* Tabs styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        padding: 6px;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 8px !important;
-        color: rgba(203, 213, 225, 0.7) !important;
-        font-weight: 500 !important;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background: rgba(139, 92, 246, 0.3) !important;
-        color: white !important;
-    }
-    
-    /* Divider */
-    hr {
-        border-color: rgba(255, 255, 255, 0.1) !important;
-        margin: 1.5rem 0 !important;
-    }
-    
-    /* Labels */
-    .stTextInput label, .stForm label {
-        color: rgba(203, 213, 225, 0.9) !important;
+
+    /* Labels - Dark for light card */
+    .stTextInput label {
+        color: #475569 !important;
         font-weight: 500 !important;
         font-size: 0.9rem !important;
+        display: none; /* Hide labels for cleaner look if placeholders are good */
+    }
+
+    /* Buttons - Primary Action */
+    .stButton > button {
+        background-color: #4f46e5 !important; /* Indigo 600 */
+        color: white !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 0.8rem !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2) !important;
+        transition: all 0.2s !important;
+        margin-top: 1rem;
+    }
+
+    .stButton > button:hover {
+        background-color: #4338ca !important; /* Indigo 700 */
+        transform: translateY(-1px);
+        box-shadow: 0 6px 15px -3px rgba(79, 70, 229, 0.3) !important;
+    }
+
+    /* Guest / Social Button Style */
+    .guest-btn button {
+        background-color: white !important;
+        color: #475569 !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+        margin-top: 0.5rem;
+    }
+
+    .guest-btn button:hover {
+        background-color: #f8fafc !important;
+        border-color: #94a3b8 !important;
+    }
+
+    /* Language Switcher Text */
+    div[data-testid="stMarkdownContainer"] p {
+        color: #64748b !important; /* Muted text for footer */
     }
     </style>
     """, unsafe_allow_html=True)
