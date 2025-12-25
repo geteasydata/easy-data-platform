@@ -213,7 +213,7 @@ def upgrade_plan(username: str, new_plan: str) -> bool:
 
 def show_login_page(lang: str = "ar") -> Optional[Dict]:
     """
-    Display login/register page
+    Display login/register page with beautiful gradient design
     Returns user data if logged in, None otherwise
     """
     
@@ -221,134 +221,285 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
     if st.session_state.get("authenticated", False):
         return st.session_state.get("user_data")
     
-    # Custom CSS for auth page
+    # Beautiful full-page auth design with gradient background
     st.markdown("""
     <style>
-    .auth-container {
-        max-width: 400px;
-        margin: 0 auto;
-        padding: 2rem;
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
-        border-radius: 20px;
-        border: 1px solid rgba(99, 102, 241, 0.3);
+    /* Full page gradient background */
+    .stApp {
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #4c1d95 50%, #5b21b6 75%, #1e1b4b 100%) !important;
+        background-size: 400% 400% !important;
+        animation: gradientShift 15s ease infinite !important;
     }
+    
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Overlay with subtle pattern */
+    .stApp::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(ellipse at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.2) 0%, transparent 50%),
+            radial-gradient(ellipse at 40% 40%, rgba(99, 102, 241, 0.15) 0%, transparent 40%);
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    /* Hide default Streamlit elements */
+    header[data-testid="stHeader"] { display: none !important; }
+    footer { display: none !important; }
+    .main .block-container {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        max-width: 100% !important;
+        padding: 1rem !important;
+    }
+    
+    /* Auth card container */
+    .auth-card {
+        max-width: 420px;
+        margin: 2rem auto;
+        padding: 2.5rem;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 
+            0 25px 50px -12px rgba(0, 0, 0, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Logo and title */
+    .auth-logo {
+        text-align: center;
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+    
     .auth-title {
         text-align: center;
         font-size: 2rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        font-weight: 800;
+        background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 50%, #8b5cf6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 1rem;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
     }
+    
     .auth-subtitle {
         text-align: center;
-        color: #94a3b8;
+        color: rgba(203, 213, 225, 0.8);
+        font-size: 0.95rem;
         margin-bottom: 2rem;
+    }
+    
+    /* Form styling */
+    .stTextInput > div > div > input {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 12px !important;
+        color: #f1f5f9 !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 0.95rem !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: rgba(139, 92, 246, 0.6) !important;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
+    }
+    
+    .stTextInput > div > div > input::placeholder {
+        color: rgba(148, 163, 184, 0.6) !important;
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 0.75rem 1.5rem !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5) !important;
+    }
+    
+    /* Guest button different style */
+    .guest-btn button {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        box-shadow: none !important;
+    }
+    
+    .guest-btn button:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    /* Tabs styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 6px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 8px !important;
+        color: rgba(203, 213, 225, 0.7) !important;
+        font-weight: 500 !important;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: rgba(139, 92, 246, 0.3) !important;
+        color: white !important;
+    }
+    
+    /* Divider */
+    hr {
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        margin: 1.5rem 0 !important;
+    }
+    
+    /* Labels */
+    .stTextInput label, .stForm label {
+        color: rgba(203, 213, 225, 0.9) !important;
+        font-weight: 500 !important;
+        font-size: 0.9rem !important;
     }
     </style>
     """, unsafe_allow_html=True)
     
-    # Header
-    st.markdown('<div class="auth-title">💎 Easy Data</div>', unsafe_allow_html=True)
+    # Center the content
+    col1, col2, col3 = st.columns([1, 2, 1])
     
-    if lang == "ar":
-        st.markdown('<div class="auth-subtitle">منصة تحليل البيانات بالذكاء الاصطناعي</div>', unsafe_allow_html=True)
-    else:
-        st.markdown('<div class="auth-subtitle">AI-Powered Data Analysis Platform</div>', unsafe_allow_html=True)
-    
-    # Tabs for Login/Register
-    if lang == "ar":
-        tab1, tab2 = st.tabs(["🔐 تسجيل الدخول", "📝 حساب جديد"])
-    else:
-        tab1, tab2 = st.tabs(["🔐 Login", "📝 Register"])
-    
-    with tab1:
-        # Login Form
-        with st.form("login_form"):
-            username = st.text_input(
-                "اسم المستخدم | Username" if lang == "ar" else "Username",
-                placeholder="username"
-            )
-            password = st.text_input(
-                "كلمة المرور | Password" if lang == "ar" else "Password",
-                type="password",
-                placeholder="••••••••"
-            )
-            
-            submit = st.form_submit_button(
-                "🚀 دخول | Login" if lang == "ar" else "🚀 Login",
-                use_container_width=True
-            )
-            
-            if submit:
-                if username and password:
-                    success, user_data, message = authenticate_user(username, password)
-                    if success:
-                        st.session_state["authenticated"] = True
-                        st.session_state["username"] = username
-                        st.session_state["user_data"] = user_data
-                        st.success(message)
-                        st.rerun()
-                    else:
-                        st.error(message)
-                else:
-                    st.warning("الرجاء إدخال جميع البيانات | Please fill all fields")
-    
-    with tab2:
-        # Register Form
-        with st.form("register_form"):
-            new_username = st.text_input(
-                "اسم المستخدم | Username" if lang == "ar" else "Username",
-                placeholder="username",
-                key="reg_username"
-            )
-            new_email = st.text_input(
-                "البريد الإلكتروني | Email" if lang == "ar" else "Email",
-                placeholder="email@example.com"
-            )
-            new_name = st.text_input(
-                "الاسم الكامل | Full Name" if lang == "ar" else "Full Name",
-                placeholder="Ahmed Mohamed"
-            )
-            new_password = st.text_input(
-                "كلمة المرور | Password" if lang == "ar" else "Password",
-                type="password",
-                placeholder="••••••••",
-                key="reg_password"
-            )
-            confirm_password = st.text_input(
-                "تأكيد كلمة المرور | Confirm Password" if lang == "ar" else "Confirm Password",
-                type="password",
-                placeholder="••••••••"
-            )
-            
-            register = st.form_submit_button(
-                "📝 إنشاء حساب | Create Account" if lang == "ar" else "📝 Create Account",
-                use_container_width=True
-            )
-            
-            if register:
-                if new_username and new_email and new_name and new_password:
-                    if new_password != confirm_password:
-                        st.error("كلمات المرور غير متطابقة | Passwords don't match")
-                    elif len(new_password) < 6:
-                        st.error("كلمة المرور قصيرة جداً (6 أحرف على الأقل) | Password too short (min 6 chars)")
-                    else:
-                        success, message = register_user(new_username, new_email, new_password, new_name)
+    with col2:
+        # Auth card header
+        st.markdown("""
+        <div class="auth-card">
+            <div class="auth-logo">💎</div>
+            <div class="auth-title">Easy Data</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Subtitle based on language
+        if lang == "ar":
+            st.markdown('<p style="text-align: center; color: rgba(203, 213, 225, 0.8); margin-top: -1rem; margin-bottom: 1.5rem;">منصة تحليل البيانات بالذكاء الاصطناعي</p>', unsafe_allow_html=True)
+        else:
+            st.markdown('<p style="text-align: center; color: rgba(203, 213, 225, 0.8); margin-top: -1rem; margin-bottom: 1.5rem;">AI-Powered Data Analysis Platform</p>', unsafe_allow_html=True)
+        
+        # Tabs for Login/Register
+        if lang == "ar":
+            tab1, tab2 = st.tabs(["🔐 تسجيل الدخول", "📝 حساب جديد"])
+        else:
+            tab1, tab2 = st.tabs(["🔐 Login", "📝 Register"])
+        
+        with tab1:
+            # Login Form
+            with st.form("login_form"):
+                username = st.text_input(
+                    "اسم المستخدم" if lang == "ar" else "Username",
+                    placeholder="أدخل اسم المستخدم" if lang == "ar" else "Enter username"
+                )
+                password = st.text_input(
+                    "كلمة المرور" if lang == "ar" else "Password",
+                    type="password",
+                    placeholder="••••••••"
+                )
+                
+                submit = st.form_submit_button(
+                    "🚀 دخول" if lang == "ar" else "🚀 Login",
+                    use_container_width=True
+                )
+                
+                if submit:
+                    if username and password:
+                        success, user_data, message = authenticate_user(username, password)
                         if success:
+                            st.session_state["authenticated"] = True
+                            st.session_state["username"] = username
+                            st.session_state["user_data"] = user_data
                             st.success(message)
-                            st.info("يمكنك الآن تسجيل الدخول | You can now login")
+                            st.rerun()
                         else:
                             st.error(message)
-                else:
-                    st.warning("الرجاء إدخال جميع البيانات | Please fill all fields")
-    
-    # Guest mode option
-    st.markdown("---")
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("👤 تجربة كضيف | Try as Guest" if lang == "ar" else "👤 Try as Guest", use_container_width=True):
+                    else:
+                        st.warning("الرجاء إدخال جميع البيانات" if lang == "ar" else "Please fill all fields")
+        
+        with tab2:
+            # Register Form
+            with st.form("register_form"):
+                new_username = st.text_input(
+                    "اسم المستخدم" if lang == "ar" else "Username",
+                    placeholder="اختر اسم مستخدم" if lang == "ar" else "Choose a username",
+                    key="reg_username"
+                )
+                new_email = st.text_input(
+                    "البريد الإلكتروني" if lang == "ar" else "Email",
+                    placeholder="email@example.com"
+                )
+                new_name = st.text_input(
+                    "الاسم الكامل" if lang == "ar" else "Full Name",
+                    placeholder="أحمد محمد" if lang == "ar" else "John Doe"
+                )
+                new_password = st.text_input(
+                    "كلمة المرور" if lang == "ar" else "Password",
+                    type="password",
+                    placeholder="••••••••",
+                    key="reg_password"
+                )
+                confirm_password = st.text_input(
+                    "تأكيد كلمة المرور" if lang == "ar" else "Confirm Password",
+                    type="password",
+                    placeholder="••••••••"
+                )
+                
+                register = st.form_submit_button(
+                    "📝 إنشاء حساب" if lang == "ar" else "📝 Create Account",
+                    use_container_width=True
+                )
+                
+                if register:
+                    if new_username and new_email and new_name and new_password:
+                        if new_password != confirm_password:
+                            st.error("كلمات المرور غير متطابقة" if lang == "ar" else "Passwords don't match")
+                        elif len(new_password) < 6:
+                            st.error("كلمة المرور قصيرة جداً (6 أحرف على الأقل)" if lang == "ar" else "Password too short (min 6 chars)")
+                        else:
+                            success, message = register_user(new_username, new_email, new_password, new_name)
+                            if success:
+                                st.success(message)
+                                st.info("يمكنك الآن تسجيل الدخول" if lang == "ar" else "You can now login")
+                            else:
+                                st.error(message)
+                    else:
+                        st.warning("الرجاء إدخال جميع البيانات" if lang == "ar" else "Please fill all fields")
+        
+        # Guest mode option
+        st.markdown("---")
+        st.markdown('<div class="guest-btn">', unsafe_allow_html=True)
+        if st.button("👤 تجربة كضيف" if lang == "ar" else "👤 Try as Guest", use_container_width=True, key="guest_btn"):
             st.session_state["authenticated"] = True
             st.session_state["username"] = "guest"
             st.session_state["user_data"] = {
@@ -357,6 +508,16 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
                 "role": "guest"
             }
             st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Language toggle at bottom
+        st.markdown("<br>", unsafe_allow_html=True)
+        lang_col1, lang_col2, lang_col3 = st.columns([1, 2, 1])
+        with lang_col2:
+            btn_label = "🌐 English" if lang == 'ar' else "🌐 العربية"
+            if st.button(btn_label, key="lang_toggle_auth", use_container_width=True):
+                st.session_state.lang = 'en' if lang == 'ar' else 'ar'
+                st.rerun()
     
     return None
 

@@ -39,6 +39,7 @@ from reports.pdf_report import create_pdf_report
 from reports.word_report import create_word_report
 
 # Integration: Easy Data Ecosystem
+
 if getattr(sys, 'frozen', False):
     # Running as compiled EXE (_internal folder)
     root_path = os.path.dirname(__file__)
@@ -49,8 +50,11 @@ else:
 brain_path = os.path.join(root_path, 'data_science_master_system')
 analyst_path = os.path.join(root_path, 'DataAnalystProject')
 
-# Add to system path for cross-component imports
-for p in [root_path, brain_path, analyst_path]:
+# Add to system path for cross-component imports - Prioritize Root
+if root_path not in sys.path:
+    sys.path.insert(0, root_path)
+
+for p in [brain_path, analyst_path]:
     if os.path.exists(p) and p not in sys.path:
         sys.path.append(p)
 
@@ -73,6 +77,7 @@ st.set_page_config(
 
 # Custom CSS for modern look
 st.markdown("""
+
 <style>
     /* Main background - Harmonized Dark Theme */
     .stApp {
@@ -188,9 +193,11 @@ def main():
     if 'app_mode' not in st.session_state:
         st.session_state.app_mode = None
         
-    # Check Query Params for Navigation (Clickable Cards)
+    # Check Query Params for Navigation (Persistent Link Support)
     try:
         query_params = st.query_params
+        
+        # Priority: Query Params > Session State
         if "mode" in query_params:
             mode = query_params["mode"]
             if mode in ['scientist', 'analyst']:
@@ -201,11 +208,9 @@ def main():
             if lang_param in ['ar', 'en']:
                 st.session_state.lang = lang_param
                 
-        # Clear param to clean URL but only after processing
-        if "mode" in query_params or "lang" in query_params:
-             st.query_params.clear()
-    except:
-        pass
+    except Exception as e:
+        print(f"Error parsing params: {e}")
+
 
     if st.session_state.lang is None:
         st.session_state.lang = 'en'
