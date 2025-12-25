@@ -223,31 +223,15 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
         return st.session_state.get("user_data")
     
 
-    # Casdoor-inspired Design
+    # Frosty Card Design (Glassmorphism + Gradient Header)
     st.markdown("""
     <style>
-    /* 1. Cinematic Background */
+    /* 1. Deep Gradient Background */
     .stApp {
-        background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         background-attachment: fixed;
     }
     
-    /* Overlay to ensure text readability if needed (optional) */
-    .stApp::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.2); /* Slight tint */
-        pointer-events: none;
-        z-index: 0;
-    }
-
     /* Hide default elements */
     header[data-testid="stHeader"] { display: none !important; }
     footer { display: none !important; }
@@ -259,170 +243,179 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100vh; /* Full viewport height */
+        height: 100vh;
     }
 
-    /* 2. The Clean White Card */
+    /* 2. The Frosty Card Container */
     .auth-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        padding: 3rem;
-        border-radius: 10px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         width: 100%;
-        max-width: 450px; /* Specific width like the image */
+        max-width: 400px;
+        overflow: hidden; /* To clip the header */
         margin: auto;
-        text-align: center;
         position: relative;
         z-index: 10;
-        border-top: 5px solid #6366f1; /* Top accent brand color */
+        border: 1px solid rgba(255, 255, 255, 0.5);
     }
 
-    /* Logo & Title */
-    .auth-logo {
-        font-size: 2.5rem;
-        margin-bottom: 0px;
-        display: inline-block;
+    /* Gradient Header inside Card */
+    .card-header {
+        background: linear-gradient(to right, #a18cd1 0%, #fbc2eb 100%); 
+        /* Or the Purple/Blue from image: linear-gradient(to right, #5f2c82, #49a09d); */
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem 1rem;
+        text-align: center;
+        color: white;
     }
     
-    .auth-title {
-        color: #1e293b;
-        font-family: 'Inter', sans-serif;
+    .card-header h2 {
+        color: white !important;
         font-weight: 700;
+        margin: 0;
         font-size: 1.8rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    /* Inputs - Rounded & Clear Borders */
+    .stTextInput > div > div > input {
+        background-color: white !important;
+        color: #000000 !important; /* Black Text */
+        border: 2px solid #e2e8f0 !important;
+        border-radius: 50px !important; /* Pill shape like image */
+        padding: 0.8rem 1.5rem !important;
+        font-size: 1rem !important;
+        box-shadow: none !important;
         margin-bottom: 0.5rem;
     }
     
-    /* Tabs Customization (To look like the internal menu) */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 20px;
-        background: transparent;
-        border-bottom: 2px solid #e2e8f0;
-        padding-bottom: 0;
-        margin-bottom: 1.5rem;
-        justify-content: center;
-    }
-
-    .stTabs [data-baseweb="tab"] {
-        background: transparent !important;
-        border: none !important;
-        color: #64748b !important;
-        font-weight: 600 !important;
-        padding-bottom: 10px !important;
-        font-size: 1rem !important;
-    }
-
-    .stTabs [aria-selected="true"] {
-        color: #6366f1 !important; /* Brand Purple */
-        border-bottom: 2px solid #6366f1 !important;
-    }
-
-    /* Inputs - Clean & Light */
-    .stTextInput > div > div > input {
-        background-color: white !important;
-        color: #334155 !important;
-        border: 1px solid #cbd5e1 !important;
-        border-radius: 6px !important;
-        padding: 0.8rem 1rem !important;
-        font-size: 0.95rem !important;
-        box-shadow: none !important;
-    }
-    
     .stTextInput > div > div > input:focus {
-        border-color: #6366f1 !important;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
+        border-color: #764ba2 !important;
+        background-color: #fff !important;
     }
 
-    /* Labels - Dark for light card */
-    .stTextInput label {
-        color: #475569 !important;
-        font-weight: 500 !important;
-        font-size: 0.9rem !important;
-        display: none; /* Hide labels for cleaner look if placeholders are good */
+    .stTextInput > div > div > input::placeholder {
+        color: #94a3b8 !important;
+        font-weight: 500;
     }
 
-    /* Buttons - Primary Action */
+    /* Hide Labels */
+    .stTextInput label { display: none; }
+
+    /* Button - Pill Shaped Gradient */
     .stButton > button {
-        background-color: #4f46e5 !important; /* Indigo 600 */
+        background: linear-gradient(to right, #667eea 0%, #764ba2 100%) !important;
         color: white !important;
         border: none !important;
-        border-radius: 6px !important;
+        border-radius: 50px !important; /* Pill shape */
         padding: 0.8rem !important;
-        font-weight: 600 !important;
-        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2) !important;
-        transition: all 0.2s !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+        transition: transform 0.2s !important;
+        width: 100%;
         margin-top: 1rem;
     }
 
     .stButton > button:hover {
-        background-color: #4338ca !important; /* Indigo 700 */
-        transform: translateY(-1px);
-        box-shadow: 0 6px 15px -3px rgba(79, 70, 229, 0.3) !important;
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
     }
-
-    /* Guest / Social Button Style */
+    
+    /* Guest Button */
     .guest-btn button {
-        background-color: white !important;
-        color: #475569 !important;
-        border: 1px solid #cbd5e1 !important;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-        margin-top: 0.5rem;
+        background: transparent !important;
+        border: 2px solid #cbd5e1 !important;
+        color: #64748b !important;
+        box-shadow: none !important;
     }
-
+    
     .guest-btn button:hover {
-        background-color: #f8fafc !important;
-        border-color: #94a3b8 !important;
+        border-color: #764ba2 !important;
+        color: #764ba2 !important;
     }
 
-    /* Language Switcher Text */
-    div[data-testid="stMarkdownContainer"] p {
-        color: #64748b !important; /* Muted text for footer */
+    /* Tabs Styling - Integrated */
+    .stTabs [data-baseweb="tab-list"] {
+        justify-content: center;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #e2e8f0;
     }
+    
+    .stTabs [data-baseweb="tab"] {
+        color: #94a3b8 !important;
+        font-weight: 600;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        color: #764ba2 !important;
+    }
+
+    /* Links */
+    a { color: #764ba2; text-decoration: none; font-weight: 600; }
     </style>
     """, unsafe_allow_html=True)
+    
+    # Message handling from callback
+    if "login_message" not in st.session_state:
+        st.session_state.login_message = None
+
+    if st.session_state.login_message:
+        success, msg = st.session_state.login_message
+        if success:
+            st.success(msg)
+            # Clear message after showing
+            st.session_state.login_message = None
+            st.rerun()
+        else:
+            st.error(msg)
+            st.session_state.login_message = None
     
     # Center the content
     col1, col2, col3 = st.columns([1, 2, 1])
     
     with col2:
-        # Auth card header
-        st.markdown("""
+        # Card Container Start
+        st.markdown(f"""
         <div class="auth-card">
-            <div class="auth-logo">💎</div>
-            <div class="auth-title">Easy Data</div>
-        </div>
+            <div class="card-header">
+                <h2>{'Login Form' if lang == 'en' else 'تسجيل الدخول'}</h2>
+            </div>
+            <div class="card-body">
         """, unsafe_allow_html=True)
-        
-        # Subtitle based on language
-        if lang == "ar":
-            st.markdown('<p style="text-align: center; color: rgba(203, 213, 225, 0.8); margin-top: -1rem; margin-bottom: 1.5rem;">منصة تحليل البيانات بالذكاء الاصطناعي</p>', unsafe_allow_html=True)
-        else:
-            st.markdown('<p style="text-align: center; color: rgba(203, 213, 225, 0.8); margin-top: -1rem; margin-bottom: 1.5rem;">AI-Powered Data Analysis Platform</p>', unsafe_allow_html=True)
         
         # Tabs for Login/Register
         if lang == "ar":
-            tab1, tab2 = st.tabs(["🔐 تسجيل الدخول", "📝 حساب جديد"])
+            tab1, tab2 = st.tabs(["دخول", "جديد"])
         else:
-            tab1, tab2 = st.tabs(["🔐 Login", "📝 Register"])
+            tab1, tab2 = st.tabs(["Login", "Signup"])
         
         with tab1:
-            # Login Form - Standard Submission
+            # Login Form - Clean & Pill Shaped
             with st.form("login_form"):
                 username = st.text_input(
-                    "اسم المستخدم" if lang == "ar" else "Username",
-                    placeholder="أدخل اسم المستخدم" if lang == "ar" else "Enter username",
+                    "Username",
+                    placeholder="Enter Email or Username",
                     key="login_user_input"
                 )
                 password = st.text_input(
-                    "كلمة المرور" if lang == "ar" else "Password",
+                    "Password",
                     type="password",
-                    placeholder="••••••••",
+                    placeholder="Password",
                     key="login_pass_input"
                 )
+                # Forgot password placeholder logic
+                st.markdown("<div style='text-align: right; margin-bottom: 10px;'><a href='#' style='font-size: 0.8rem;'>Forgot password?</a></div>", unsafe_allow_html=True)
                 
                 submitted = st.form_submit_button(
-                    "🚀 دخول" if lang == "ar" else "🚀 Login",
+                    "Login",
                     use_container_width=True
                 )
                 
@@ -430,94 +423,72 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
                     if username and password:
                         success, user_data, message = authenticate_user(username, password)
                         if success:
-                            # Force update state immediately
                             st.session_state.update({
                                 "authenticated": True,
                                 "username": username,
                                 "user_data": user_data
                             })
-                            st.success(message)
                             st.rerun()
                         else:
                             st.error(message)
                     else:
-                        st.warning("الرجاء إدخال جميع البيانات" if lang == "ar" else "Please fill all fields")
+                        st.warning("Please fill all fields")
         
         with tab2:
             # Register Form
             with st.form("register_form"):
-                new_username = st.text_input(
-                    "اسم المستخدم" if lang == "ar" else "Username",
-                    placeholder="اختر اسم مستخدم" if lang == "ar" else "Choose a username",
-                    key="reg_username"
-                )
-                new_email = st.text_input(
-                    "البريد الإلكتروني" if lang == "ar" else "Email",
-                    placeholder="email@example.com"
-                )
-                new_name = st.text_input(
-                    "الاسم الكامل" if lang == "ar" else "Full Name",
-                    placeholder="أحمد محمد" if lang == "ar" else "John Doe"
-                )
-                new_password = st.text_input(
-                    "كلمة المرور" if lang == "ar" else "Password",
-                    type="password",
-                    placeholder="••••••••",
-                    key="reg_password"
-                )
-                confirm_password = st.text_input(
-                    "تأكيد كلمة المرور" if lang == "ar" else "Confirm Password",
-                    type="password",
-                    placeholder="••••••••"
-                )
+                new_username = st.text_input("User", placeholder="Username", key="reg_username")
+                new_email = st.text_input("Email", placeholder="Email")
+                new_name = st.text_input("Name", placeholder="Full Name")
+                new_password = st.text_input("Pass", type="password", placeholder="Password", key="reg_password")
+                confirm_password = st.text_input("Conf", type="password", placeholder="Confirm")
                 
-                register = st.form_submit_button(
-                    "📝 إنشاء حساب" if lang == "ar" else "📝 Create Account",
-                    use_container_width=True
-                )
+                register = st.form_submit_button("Signup", use_container_width=True)
                 
                 if register:
                     if new_username and new_email and new_name and new_password:
                         if new_password != confirm_password:
-                            st.error("كلمات المرور غير متطابقة" if lang == "ar" else "Passwords don't match")
+                            st.error("Mismatch")
                         elif len(new_password) < 6:
-                            st.error("كلمة المرور قصيرة جداً (6 أحرف على الأقل)" if lang == "ar" else "Password too short (min 6 chars)")
+                            st.error("Too short")
                         else:
                             success, message = register_user(new_username, new_email, new_password, new_name)
                             if success:
                                 st.success(message)
-                                st.info("يمكنك الآن تسجيل الدخول" if lang == "ar" else "You can now login")
                             else:
                                 st.error(message)
                     else:
-                        st.warning("الرجاء إدخال جميع البيانات" if lang == "ar" else "Please fill all fields")
+                        st.warning("Fill fields")
         
-        # Guest mode option
-        st.markdown("---")
-        st.markdown('<div class="guest-btn">', unsafe_allow_html=True)
-        is_guest = st.button("👤 تجربة كضيف" if lang == "ar" else "👤 Try as Guest", use_container_width=True, key="guest_btn")
-        if is_guest:
+        # Close Card Body
+        st.markdown("""
+            <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: #64748b;">
+                Not a member? <a href="#">Signup now</a>
+            </div>
+            
+            <hr style="margin: 20px 0; border-color: #eee;">
+            
+            </div> <!-- End card-body -->
+        </div> <!-- End auth-card -->
+        """, unsafe_allow_html=True)
+        
+        # Guest & Lang (Outside card for clarity or inside if preferred)
+        st.markdown("<br>", unsafe_allow_html=True)
+        # Guest Button
+        if st.button("👤 Try Guest" if lang == 'en' else "👤 ضيف", key="guest_btn", use_container_width=True):
              st.session_state.update({
                 "authenticated": True,
                 "username": "guest",
-                "user_data": {
-                    "name": "Guest",
-                    "plan": "free",
-                    "role": "guest"
-                }
+                "user_data": {"name": "Guest", "plan": "free", "role": "guest"}
             })
              st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Language toggle at bottom
-        st.markdown("<br>", unsafe_allow_html=True)
-        lang_col1, lang_col2, lang_col3 = st.columns([1, 2, 1])
-        with lang_col2:
-            btn_label = "🌐 English" if lang == 'ar' else "🌐 العربية"
-            if st.button(btn_label, key="lang_toggle_auth", use_container_width=True):
-                st.session_state.lang = 'en' if lang == 'ar' else 'ar'
-                st.rerun()
-    
+
+        # Language Toggle
+        btn_label = "🌐 English" if lang == 'ar' else "🌐 العربية"
+        if st.button(btn_label, key="lang_toggle_auth", use_container_width=True):
+            st.session_state.lang = 'en' if lang == 'ar' else 'ar'
+            st.rerun()
+
     return None
 
 
