@@ -101,8 +101,7 @@ possible_analyst_files = [
 ]
 
 found_analyst = False
-for p in possible_paths: # Fix: Use the paths derived above or define new list
-    pass
+
 
 for target_file in possible_analyst_files:
     if target_file.exists():
