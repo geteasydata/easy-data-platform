@@ -11,9 +11,11 @@ import plotly.graph_objects as go
 import time
 import io
 import joblib
+import pathlib  # Added missing import
 from pathlib import Path
 import sys
 import os
+
 
 # Import translations using explicit path to avoid conflicts with other projects
 import importlib.util
