@@ -1,0 +1,24 @@
+# Development environment
+environment: development
+
+# Logging
+logging:
+  level: DEBUG
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Database
+database:
+  host: localhost
+  port: 5432
+  name: dsms_dev
+
+# Model settings
+model:
+  cache_dir: ./cache
+  checkpoint_dir: ./checkpoints
+
+# API
+api:
+  host: 0.0.0.0
+  port: 8000
+  reload: true

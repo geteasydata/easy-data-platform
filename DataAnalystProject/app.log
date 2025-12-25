@@ -1,0 +1,335 @@
+2025-12-16 10:39:16,722 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-16 10:53:22,348 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 10:53:23,427 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 10:54:03,445 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 10:54:04,542 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 10:54:04,813 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: marketing
+2025-12-16 10:57:16,436 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 10:57:17,568 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 10:57:17,819 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: marketing
+2025-12-16 10:57:34,633 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 10:57:35,708 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 10:57:36,807 - paths.data_analyst.dashboard_gen - INFO - Generated Excel dashboard: D:\The drive\AG IDE\Data Scientist\DataAnalystProject\outputs\dashboards\dashboard_marketing_20251216_105736.xlsx
+2025-12-16 15:31:33,041 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:31:34,172 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:31:34,467 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-16 15:31:41,287 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:31:42,329 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:31:42,572 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-16 15:31:49,201 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:31:50,351 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:31:50,572 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-16 15:32:17,427 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:32:18,438 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:32:18,664 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-16 15:32:19,719 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:32:20,908 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:32:22,128 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:32:23,251 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:32:23,466 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-16 15:32:45,474 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:32:46,443 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:32:46,653 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-16 15:33:18,264 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:33:19,265 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:33:19,485 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-16 15:33:43,909 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:33:44,979 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:33:45,241 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-16 15:33:52,323 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:33:53,404 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:33:53,639 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-16 15:33:54,781 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-16 15:33:55,797 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-16 15:33:56,024 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 07:33:14,036 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-12-20 07:33:14,606 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-12-20 10:22:00,264 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:22:01,985 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:22:02,351 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:22:09,849 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:22:11,639 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:22:11,986 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:22:17,416 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:22:19,105 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:22:19,453 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:22:42,114 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:22:43,748 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:22:45,671 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:22:47,298 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:22:47,652 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:23:29,816 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:23:31,458 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:23:31,827 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:23:58,910 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:24:03,133 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:24:04,251 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:24:05,172 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:24:05,518 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:24:27,594 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:24:29,219 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:24:29,595 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:24:46,085 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:24:47,885 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:24:48,251 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:25:02,804 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:25:04,598 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:25:04,981 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:25:07,178 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:25:08,937 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:25:09,331 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:25:23,083 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:25:27,495 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:25:27,891 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:25:29,741 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:25:30,104 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:28:00,050 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:28:02,245 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:28:02,726 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:28:07,673 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:28:09,774 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:28:10,232 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:28:39,676 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:28:41,849 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:28:42,284 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:29:03,105 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:29:05,054 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:29:05,560 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 10:29:08,455 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:29:10,570 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:29:12,329 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:29:13,026 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:29:14,903 - paths.data_analyst.dashboard_gen - INFO - Generated Excel dashboard: D:\The drive\AG IDE\Data Scientist\Easy Data\DataAnalystProject\outputs\dashboards\dashboard_logistics_20251220_102913.xlsx
+2025-12-20 10:29:14,911 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 10:29:16,973 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 10:29:17,385 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 13:57:57,727 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:57:57,792 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:57:57,809 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:58:04,530 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:58:04,557 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:58:04,825 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:58:04,863 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:58:04,871 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:58:16,822 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:58:16,876 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:58:16,889 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:58:28,562 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:58:28,616 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:58:28,629 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:58:35,781 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:58:35,814 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:58:35,820 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:58:45,461 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:58:45,495 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:58:45,504 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:58:47,977 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:58:48,006 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:58:48,013 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:58:49,589 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:58:49,620 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:58:49,628 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:59:07,367 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:59:07,418 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:59:07,429 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:59:23,237 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:59:23,283 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:59:23,293 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:59:41,067 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:59:41,096 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:59:41,103 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:59:41,231 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:59:41,262 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:59:41,268 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 13:59:57,091 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 9 columns
+2025-12-20 13:59:57,130 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 1 potential issues
+2025-12-20 13:59:57,139 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: hr
+2025-12-20 14:49:04,162 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 6 columns
+2025-12-20 14:49:04,193 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 0 potential issues
+2025-12-20 14:49:04,203 - paths.data_analyst.insights - INFO - Generated 3 insights for domain: finance
+2025-12-20 14:49:09,181 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 500 rows and 6 columns
+2025-12-20 14:49:09,204 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 0 potential issues
+2025-12-20 14:49:09,211 - paths.data_analyst.insights - INFO - Generated 3 insights for domain: finance
+2025-12-20 14:51:03,739 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 14:51:05,423 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 14:51:05,853 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 14:51:16,586 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 14:51:18,265 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 14:51:18,609 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 14:51:33,257 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 14:51:34,935 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 14:51:35,274 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 14:51:36,786 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 14:51:38,699 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 14:51:40,650 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 14:51:42,313 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 14:51:42,669 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 14:51:59,863 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 14:52:01,635 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 14:52:02,001 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 14:52:15,479 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 14:52:17,177 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 14:52:17,549 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 14:52:32,040 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 14:52:33,722 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 14:52:34,081 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 14:54:36,012 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-3504' coro=<WebSocketProtocol13.write_message.<locals>.wrapper() done, defined at C:\Users\IBM\AppData\Local\Programs\Python\Python313\Lib\site-packages\tornado\websocket.py:1111> exception=WebSocketClosedError()>
+Traceback (most recent call last):
+  File "C:\Users\IBM\AppData\Local\Programs\Python\Python313\Lib\site-packages\tornado\websocket.py", line 1113, in wrapper
+    await fut
+tornado.iostream.StreamClosedError: Stream is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\IBM\AppData\Local\Programs\Python\Python313\Lib\site-packages\tornado\websocket.py", line 1115, in wrapper
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+2025-12-20 19:53:26,573 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 19:53:32,777 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 19:53:35,258 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 19:53:40,088 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 19:53:40,387 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 19:53:43,639 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 19:53:44,350 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 19:54:03,525 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 19:54:06,912 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 19:54:07,645 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 19:54:27,845 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 19:54:31,218 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 19:54:31,932 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 19:54:46,965 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 19:54:50,261 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 19:54:50,984 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 19:54:54,563 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 19:54:58,541 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 19:54:59,251 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 19:55:02,617 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 19:55:05,962 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 19:55:11,781 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 19:55:15,167 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 19:55:15,828 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:01:00,717 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:01:04,089 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:01:04,791 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:01:13,246 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:01:18,680 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:01:22,555 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:01:29,887 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:01:30,074 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:01:31,268 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:01:36,292 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:01:36,743 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:01:37,455 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:01:41,614 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:01:45,774 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:01:49,886 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:01:53,280 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:01:54,004 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:07:00,847 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:07:04,280 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:07:05,018 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:07:08,400 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:07:11,990 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:07:15,507 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:07:21,032 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:07:35,082 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:07:38,396 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:07:39,107 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:07:48,374 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:07:51,793 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:07:52,496 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:12:31,740 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:12:37,281 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:12:49,872 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:12:52,339 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:12:56,006 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:12:56,788 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:12:57,493 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:13:00,892 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:13:04,270 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:13:04,983 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:13:47,295 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:13:50,557 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:13:51,258 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:18:46,579 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:18:49,693 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:18:50,396 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:19:28,692 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:19:31,995 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:19:32,731 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:19:56,601 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:19:59,593 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:20:00,242 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:29:21,754 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:29:24,960 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:29:27,727 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:29:28,853 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:29:48,307 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:29:50,936 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:29:54,369 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:29:55,358 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:29:56,077 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:30:27,612 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:30:31,006 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:30:31,733 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:31:23,469 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:31:26,903 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:31:27,625 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:31:46,673 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:31:52,840 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:31:53,896 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:31:57,226 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:32:00,173 - paths.data_analyst.dashboard_gen - INFO - Generated Excel dashboard: D:\The drive\AG IDE\Data Scientist\Easy Data\DataAnalystProject\outputs\dashboards\dashboard_logistics_20251220_203157.xlsx
+2025-12-20 20:32:00,182 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:32:03,537 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:32:04,247 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:33:47,292 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:33:50,716 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:33:51,436 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:34:46,534 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:34:49,860 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:34:50,564 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 20:34:54,988 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:34:58,842 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:34:58,862 - paths.data_analyst.dashboard_gen - INFO - Generated Power BI template: D:\The drive\AG IDE\Data Scientist\Easy Data\DataAnalystProject\outputs\dashboards\powerbi_logistics_20251220_203458
+2025-12-20 20:34:58,871 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 20:35:02,228 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 20:35:02,976 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 21:22:39,555 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:22:44,841 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:22:58,319 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:23:01,521 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:23:02,897 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 21:23:07,109 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:23:10,302 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:23:10,993 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 21:23:14,887 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:23:18,087 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:23:18,765 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 21:23:21,999 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:23:26,009 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:23:48,418 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:23:51,616 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:23:52,311 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 21:24:44,026 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:24:47,334 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:24:50,158 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:24:50,803 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:24:53,798 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:24:54,812 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:24:55,678 - paths.data_analyst.dashboard_gen - ERROR - Premium generation failed, falling back to basic: cannot access local variable 'axis_font' where it is not associated with a value
+2025-12-20 21:25:02,021 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:25:04,759 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:25:07,826 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:25:08,864 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:25:08,874 - paths.data_analyst.dashboard_gen - INFO - Generated Power BI template: D:\The drive\AG IDE\Data Scientist\Easy Data\DataAnalystProject\outputs\dashboards\powerbi_logistics_20251220_212508
+2025-12-20 21:25:08,883 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:25:12,056 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:25:12,756 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics
+2025-12-20 21:31:20,681 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:31:27,515 - paths.data_analyst.analyzer - INFO - Starting analysis on dataset with 150000 rows and 21 columns
+2025-12-20 21:31:27,972 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:31:31,147 - paths.data_analyst.analyzer - INFO - Analysis complete. Found 20 potential issues
+2025-12-20 21:31:31,832 - paths.data_analyst.insights - INFO - Generated 2 insights for domain: logistics

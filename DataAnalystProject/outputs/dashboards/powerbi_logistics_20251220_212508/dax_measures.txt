@@ -1,0 +1,53 @@
+
+// Total Records
+Total Records = COUNTROWS('logisticsData')
+
+
+// Average Avg VTAT
+Avg Avg_VTAT = AVERAGE('logisticsData'[Avg VTAT])
+
+// Sum Avg VTAT  
+Total Avg_VTAT = SUM('logisticsData'[Avg VTAT])
+
+// YTD Avg VTAT
+YTD Avg_VTAT = TOTALYTD(SUM('logisticsData'[Avg VTAT]), 'Calendar'[Date])
+
+
+// Average Avg CTAT
+Avg Avg_CTAT = AVERAGE('logisticsData'[Avg CTAT])
+
+// Sum Avg CTAT  
+Total Avg_CTAT = SUM('logisticsData'[Avg CTAT])
+
+// YTD Avg CTAT
+YTD Avg_CTAT = TOTALYTD(SUM('logisticsData'[Avg CTAT]), 'Calendar'[Date])
+
+
+// Average Cancelled Rides by Customer
+Avg Cancelled_Rides_by_Customer = AVERAGE('logisticsData'[Cancelled Rides by Customer])
+
+// Sum Cancelled Rides by Customer  
+Total Cancelled_Rides_by_Customer = SUM('logisticsData'[Cancelled Rides by Customer])
+
+// YTD Cancelled Rides by Customer
+YTD Cancelled_Rides_by_Customer = TOTALYTD(SUM('logisticsData'[Cancelled Rides by Customer]), 'Calendar'[Date])
+
+
+// Average Cancelled Rides by Driver
+Avg Cancelled_Rides_by_Driver = AVERAGE('logisticsData'[Cancelled Rides by Driver])
+
+// Sum Cancelled Rides by Driver  
+Total Cancelled_Rides_by_Driver = SUM('logisticsData'[Cancelled Rides by Driver])
+
+// YTD Cancelled Rides by Driver
+YTD Cancelled_Rides_by_Driver = TOTALYTD(SUM('logisticsData'[Cancelled Rides by Driver]), 'Calendar'[Date])
+
+
+// Average Incomplete Rides
+Avg Incomplete_Rides = AVERAGE('logisticsData'[Incomplete Rides])
+
+// Sum Incomplete Rides  
+Total Incomplete_Rides = SUM('logisticsData'[Incomplete Rides])
+
+// YTD Incomplete Rides
+YTD Incomplete_Rides = TOTALYTD(SUM('logisticsData'[Incomplete Rides]), 'Calendar'[Date])

@@ -1,0 +1,127 @@
+version: '3.8'
+
+services:
+  # Development environment with Jupyter
+  jupyter:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    ports:
+      - "8888:8888"
+    volumes:
+      - ../:/app
+      - jupyter_data:/root/.jupyter
+    environment:
+      - PYTHONPATH=/app
+      - JUPYTER_TOKEN=dsms2024
+    networks:
+      - dsms-network
+
+  # Production API Server
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.prod
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/models/production
+      - LOG_LEVEL=INFO
+      - WORKERS=4
+    volumes:
+      - model_store:/models
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - dsms-network
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 2G
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=dsms
+      - POSTGRES_USER=dsms_user
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-changeme}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - dsms-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - dsms-network
+
+  # MLflow Tracking Server
+  mlflow:
+    image: python:3.10-slim
+    command: >
+      bash -c "pip install mlflow psycopg2-binary boto3 &&
+               mlflow server 
+               --host 0.0.0.0 
+               --port 5000 
+               --backend-store-uri postgresql://${DB_USER:-dsms_user}:${DB_PASSWORD:-changeme}@postgres:5432/dsms
+               --default-artifact-root /mlruns"
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_data:/mlruns
+    depends_on:
+      - postgres
+    networks:
+      - dsms-network
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - dsms-network
+
+  # Grafana Dashboards
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - dsms-network
+
+volumes:
+  jupyter_data:
+  model_store:
+  postgres_data:
+  redis_data:
+  mlflow_data:
+  prometheus_data:
+  grafana_data:
+
+
+networks:
+  dsms-network:
+    driver: bridge

@@ -1,0 +1,76 @@
+{
+  "hr": {
+    "name": "Human Resources",
+    "name_ar": "الموارد البشرية",
+    "icon": "👥",
+    "key_metrics": ["employee_count", "turnover_rate", "satisfaction_score", "avg_tenure"],
+    "common_columns": ["employee_id", "department", "salary", "hire_date", "performance_score"],
+    "insights_focus": ["retention", "performance", "compensation", "diversity"],
+    "thresholds": {
+      "turnover_warning": 0.15,
+      "satisfaction_min": 3.5,
+      "tenure_healthy": 3.0
+    }
+  },
+  "healthcare": {
+    "name": "Healthcare",
+    "name_ar": "الرعاية الصحية",
+    "icon": "🏥",
+    "key_metrics": ["patient_count", "readmission_rate", "avg_stay", "mortality_rate"],
+    "common_columns": ["patient_id", "diagnosis", "treatment", "admission_date", "outcome"],
+    "insights_focus": ["patient_outcomes", "resource_utilization", "quality_metrics"],
+    "thresholds": {
+      "readmission_threshold": 0.10,
+      "los_target": 5.0
+    }
+  },
+  "finance": {
+    "name": "Finance",
+    "name_ar": "المالية",
+    "icon": "💰",
+    "key_metrics": ["revenue", "profit_margin", "cash_flow", "roi"],
+    "common_columns": ["transaction_id", "amount", "date", "category", "account"],
+    "insights_focus": ["profitability", "risk", "cash_management", "forecasting"],
+    "thresholds": {
+      "profit_margin_target": 0.15,
+      "expense_ratio": 0.70
+    }
+  },
+  "retail": {
+    "name": "Retail & Commerce",
+    "name_ar": "التجارة والمبيعات",
+    "icon": "🛒",
+    "key_metrics": ["sales_revenue", "conversion_rate", "avg_order_value", "customer_lifetime"],
+    "common_columns": ["order_id", "product", "quantity", "price", "customer_id"],
+    "insights_focus": ["sales_trends", "customer_behavior", "inventory", "pricing"],
+    "thresholds": {
+      "conversion_target": 0.03,
+      "aov_target": 50.0
+    }
+  },
+  "marketing": {
+    "name": "Marketing & Advertising",
+    "name_ar": "التسويق والإعلان",
+    "icon": "📢",
+    "key_metrics": ["campaign_roi", "conversion_rate", "cac", "engagement_rate"],
+    "common_columns": ["campaign_id", "channel", "spend", "impressions", "conversions"],
+    "insights_focus": ["campaign_performance", "channel_attribution", "audience_insights"],
+    "thresholds": {
+      "ctr_target": 0.02,
+      "cpa_target": 50.0,
+      "roas_target": 3.0
+    }
+  },
+  "education": {
+    "name": "Education",
+    "name_ar": "التعليم",
+    "icon": "🎓",
+    "key_metrics": ["graduation_rate", "avg_gpa", "enrollment", "retention_rate"],
+    "common_columns": ["student_id", "course", "grade", "enrollment_date", "status"],
+    "insights_focus": ["academic_performance", "student_success", "resource_allocation"],
+    "thresholds": {
+      "pass_rate_target": 0.80,
+      "attendance_target": 0.90
+    }
+  }
+}

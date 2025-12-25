@@ -62,70 +62,31 @@ for p in [root_path, brain_path, analyst_path_dir]:
     if p.exists() and str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-# 2. Dynamic Module Loader (The "Nuclear" Fix for Cloud Imports)
-def load_module_from_path(name, path):
-    try:
-        if not os.path.exists(path):
-            return None, f"File not found: {path}"
-            
-        spec = importlib.util.spec_from_file_location(name, path)
-        if spec is None:
-            return None, f"Could not load spec for {name}"
-            
-        module = importlib.util.module_from_spec(spec)
-        sys.modules[name] = module
-        spec.loader.exec_module(module)
-        return module, None
-    except Exception as e:
-        return None, str(e)
 
-# Optional: Master System Logic
-try:
-    from data_science_master_system.logic import (
-        AnalyticalLogic, EthicalLogic, EngineeringLogic, CausalLogic
-    )
-    HAS_MASTER_SYSTEM = True
-except ImportError:
-    HAS_MASTER_SYSTEM = False
+# ==========================================
+# Standard Import (Unified Structure)
+# ==========================================
 
-# Import Data Analyst Module Dynamically
+# 1. Add submodules to path if needed (for internal relative imports)
+current_dir = pathlib.Path(__file__).parent.resolve()
+analyst_dir = current_dir / "DataAnalystProject"
+if analyst_dir.exists() and str(analyst_dir) not in sys.path:
+    sys.path.append(str(analyst_dir))
+
+# 2. Import Data Analyst Module
 show_data_analyst_path = None
-analyst_error = None
-
-# Try finding the file in multiple locations (Cloud structure resilience)
-possible_analyst_files = [
-    root_path / 'DataAnalystProject' / 'main.py',
-    current_dir / 'DataAnalystProject' / 'main.py',
-    root_path / 'easy-data-platform' / 'DataAnalystProject' / 'main.py', # Git repo name case
-    pathlib.Path('DataAnalystProject/main.py').resolve()
-]
-
-found_analyst = False
-
-
-for target_file in possible_analyst_files:
-    if target_file.exists():
-        analyst_module, err = load_module_from_path("DataAnalystProject.main", str(target_file))
-        if analyst_module:
-            try:
-                show_data_analyst_path = analyst_module.show_data_analyst_path
-                found_analyst = True
-                break
-            except AttributeError:
-                analyst_error = "Module loaded but function 'show_data_analyst_path' missing."
-        else:
-            analyst_error = err
-            
-# Fallback if critical failure
-if not found_analyst:
-    print(f"DataAnalystProject load failed. Error: {analyst_error}")
+try:
+    # Now that DataAnalystProject is INSIDE the repo, this is a standard import
+    from DataAnalystProject.main import show_data_analyst_path
+except ImportError as e:
+    # Fallback to prevent crash
+    print(f"Error loading DataAnalystProject: {e}")
     def show_data_analyst_path():
         st.error("⚠️ System Error: Data Analyst Module Unavailable")
-        st.warning(f"Technical Details: {analyst_error}")
+        st.info("The module files might not have been uploaded correctly.")
         with st.expander("Diagnostic Info"):
-            st.write(f"Searched locations: {[str(p) for p in possible_analyst_files]}")
-            st.write(f"Current Dir: {os.getcwd()}")
-            st.write(f"Dir Contents: {os.listdir(os.getcwd())}")
+            st.code(f"Error: {e}\n\nCWD: {os.getcwd()}\n\nDir: {os.listdir(os.getcwd())}")
+
 
 # Page Config
 st.set_page_config(

@@ -1,0 +1,31 @@
+# Production environment
+environment: production
+
+# Logging
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Database
+database:
+  host: ${DB_HOST}
+  port: 5432
+  name: dsms_prod
+  ssl: true
+
+# Model settings
+model:
+  cache_dir: /app/cache
+  checkpoint_dir: /app/checkpoints
+
+# API
+api:
+  host: 0.0.0.0
+  port: 8000
+  workers: 4
+  reload: false
+
+# Monitoring
+monitoring:
+  enabled: true
+  prometheus_port: 9090

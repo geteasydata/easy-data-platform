@@ -1,0 +1,41 @@
+{
+  "pages": [
+    {
+      "name": "Overview",
+      "displayName": "LOGISTICS Overview",
+      "visuals": [
+        {
+          "type": "card",
+          "title": "Total Records",
+          "measure": "Total Records"
+        },
+        {
+          "type": "barChart",
+          "title": "Category Distribution"
+        },
+        {
+          "type": "lineChart",
+          "title": "Trend Over Time"
+        },
+        {
+          "type": "pieChart",
+          "title": "Breakdown"
+        }
+      ]
+    },
+    {
+      "name": "Details",
+      "displayName": "Detailed Analysis",
+      "visuals": [
+        {
+          "type": "table",
+          "title": "Data Table"
+        },
+        {
+          "type": "matrix",
+          "title": "Summary Matrix"
+        }
+      ]
+    }
+  ]
+}
