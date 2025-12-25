@@ -93,7 +93,7 @@ st.set_page_config(
     page_title="Easy Data | البيانات السهلة",
     page_icon="💎",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 
@@ -108,10 +108,10 @@ st.markdown("""
         color: #e2e8f0;
     }
 
-    /* Hide Streamlit Header and Footer */
-    header[data-testid="stHeader"] {
+    /* Hide Streamlit Header and Footer - RESTORED HEADER FOR SIDEBAR ACCESS */
+    /* header[data-testid="stHeader"] {
         display: none !important;
-    }
+    } */
     div[data-testid="stDecoration"] {
         display: none !important;
     }
