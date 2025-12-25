@@ -202,11 +202,13 @@ def main():
             mode = query_params["mode"]
             if mode in ['scientist', 'analyst']:
                 st.session_state.app_mode = mode
+                params_processed = True
         
         if "lang" in query_params:
             lang_param = query_params["lang"]
             if lang_param in ['ar', 'en']:
                 st.session_state.lang = lang_param
+                params_processed = True
                 
     except Exception as e:
         print(f"Error parsing params: {e}")
