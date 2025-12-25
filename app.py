@@ -191,19 +191,24 @@ def main():
     # Check Query Params for Navigation (Clickable Cards)
     try:
         query_params = st.query_params
+        params_processed = False
+        
         if "mode" in query_params:
             mode = query_params["mode"]
             if mode in ['scientist', 'analyst']:
                 st.session_state.app_mode = mode
+                params_processed = True
         
         if "lang" in query_params:
             lang_param = query_params["lang"]
             if lang_param in ['ar', 'en']:
                 st.session_state.lang = lang_param
+                params_processed = True
                 
-        # Clear param to clean URL but only after processing
-        if "mode" in query_params or "lang" in query_params:
-             st.query_params.clear()
+        # Clear params and rerun ONLY if we processed something
+        if params_processed:
+            st.query_params.clear()
+            st.rerun()
     except:
         pass
 
