@@ -40,25 +40,39 @@ from reports.word_report import create_word_report
 
 # Integration: Easy Data Ecosystem
 
-if getattr(sys, 'frozen', False):
-    # Running as compiled EXE (_internal folder)
-    root_path = os.path.dirname(__file__)
-else:
-    # Running as script (Parent folder of AI_Expert_App)
-    root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-brain_path = os.path.join(root_path, 'data_science_master_system')
-analyst_path = os.path.join(root_path, 'DataAnalystProject')
+# ==========================================
+# Robust Path Setup
+# ==========================================
+current_file = pathlib.Path(__file__).resolve()
+current_dir = current_file.parent
+root_path = current_dir.parent  # Easy Data folder
 
-# Add to system path for cross-component imports - Prioritize Root
-if root_path not in sys.path:
-    sys.path.insert(0, root_path)
+# Smart Path Detection for DataAnalystProject
+analyst_path = None
+possible_paths = [
+    root_path / 'DataAnalystProject',
+    current_dir / 'DataAnalystProject',  # If inside same dir
+    pathlib.Path('DataAnalystProject').resolve(),
+    pathlib.Path('.').resolve() / 'DataAnalystProject'
+]
 
-for p in [brain_path, analyst_path]:
-    if os.path.exists(p) and p not in sys.path:
-        sys.path.append(p)
+for p in possible_paths:
+    if p.exists():
+        analyst_path = p
+        # Add parent directory to sys.path to allow "import DataAnalystProject"
+        if str(p.parent) not in sys.path:
+            sys.path.insert(0, str(p.parent))
+        break
 
-# Optional: data_science_master_system (not required for cloud deployment)
+brain_path = root_path / 'data_science_master_system'
+
+# Add paths if they exist
+for p in [root_path, brain_path, analyst_path]:
+    if p and p.exists() and str(p) not in sys.path:
+        sys.path.append(str(p))
+
+# Optional: data_science_master_system
 try:
     from data_science_master_system.logic import (
         AnalyticalLogic, EthicalLogic, EngineeringLogic, CausalLogic
@@ -66,6 +80,17 @@ try:
     HAS_MASTER_SYSTEM = True
 except ImportError:
     HAS_MASTER_SYSTEM = False
+    
+# Import Data Analyst Module with Error Handling
+try:
+    from DataAnalystProject.main import show_data_analyst_path
+except ImportError as e:
+    # Fallback to prevent crash
+    print(f"Error loading DataAnalystProject: {e}")
+    def show_data_analyst_path():
+        st.error("⚠️ Critical Error: Could not load Analyst Module.")
+        with st.expander("Debug Info (Share with Developer)"):
+            st.code(f"Error: {e}\n\nSys Path: {sys.path}\n\nCWD: {os.getcwd()}\n\nDir Contents: {os.listdir(os.getcwd()) if os.path.exists(os.getcwd()) else 'N/A'}")
 
 # Page Config
 st.set_page_config(
@@ -77,6 +102,7 @@ st.set_page_config(
 
 # Custom CSS for modern look
 st.markdown("""
+
 
 <style>
     /* Main background - Harmonized Dark Theme */
