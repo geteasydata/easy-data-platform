@@ -211,16 +211,47 @@ def upgrade_plan(username: str, new_plan: str) -> bool:
     return False
 
 
+def login_callback(username_key, password_key):
+    """Callback for login form submission"""
+    username = st.session_state.get(username_key, "")
+    password = st.session_state.get(password_key, "")
+    
+    if username and password:
+        success, user_data, message = authenticate_user(username, password)
+        if success:
+            st.session_state["authenticated"] = True
+            st.session_state["username"] = username
+            st.session_state["user_data"] = user_data
+            st.session_state["login_message"] = (True, message)
+        else:
+            st.session_state["login_message"] = (False, message)
+    else:
+        st.session_state["login_message"] = (False, "الرجاء إدخال جميع البيانات" if st.session_state.get('lang') == 'ar' else "Please fill all fields")
+
+def guest_callback():
+    """Callback for guest login"""
+    st.session_state["authenticated"] = True
+    st.session_state["username"] = "guest"
+    st.session_state["user_data"] = {
+        "name": "Guest",
+        "plan": "free",
+        "role": "guest"
+    }
+
 def show_login_page(lang: str = "ar") -> Optional[Dict]:
     """
     Display login/register page with beautiful gradient design
     Returns user data if logged in, None otherwise
     """
     
-    # Check if already logged in
+    # Check if already logged in (Persistent Check)
     if st.session_state.get("authenticated", False):
         return st.session_state.get("user_data")
     
+    # Initialize message state
+    if "login_message" not in st.session_state:
+        st.session_state.login_message = None
+
     # Beautiful full-page auth design with gradient background
     st.markdown("""
     <style>
@@ -350,11 +381,13 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
         background: rgba(255, 255, 255, 0.08) !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
         box-shadow: none !important;
+        opacity: 0.9;
     }
     
     .guest-btn button:hover {
         background: rgba(255, 255, 255, 0.15) !important;
         border-color: rgba(255, 255, 255, 0.3) !important;
+        opacity: 1;
     }
     
     /* Tabs styling */
@@ -391,6 +424,18 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
     </style>
     """, unsafe_allow_html=True)
     
+    # Message handling from callback
+    if st.session_state.login_message:
+        success, msg = st.session_state.login_message
+        if success:
+            st.success(msg)
+            # Clear message after showing
+            st.session_state.login_message = None
+            st.rerun()
+        else:
+            st.error(msg)
+            st.session_state.login_message = None
+    
     # Center the content
     col1, col2, col3 = st.columns([1, 2, 1])
     
@@ -416,39 +461,30 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
             tab1, tab2 = st.tabs(["🔐 Login", "📝 Register"])
         
         with tab1:
-            # Login Form
+            # Login Form - Uses Callbacks
             with st.form("login_form"):
-                username = st.text_input(
+                st.text_input(
                     "اسم المستخدم" if lang == "ar" else "Username",
-                    placeholder="أدخل اسم المستخدم" if lang == "ar" else "Enter username"
+                    placeholder="أدخل اسم المستخدم" if lang == "ar" else "Enter username",
+                    key="login_username"
                 )
-                password = st.text_input(
+                st.text_input(
                     "كلمة المرور" if lang == "ar" else "Password",
                     type="password",
-                    placeholder="••••••••"
+                    placeholder="••••••••",
+                    key="login_password"
                 )
                 
-                submit = st.form_submit_button(
+                # Use callback for immediate state update
+                st.form_submit_button(
                     "🚀 دخول" if lang == "ar" else "🚀 Login",
-                    use_container_width=True
+                    use_container_width=True,
+                    on_click=login_callback,
+                    args=("login_username", "login_password")
                 )
-                
-                if submit:
-                    if username and password:
-                        success, user_data, message = authenticate_user(username, password)
-                        if success:
-                            st.session_state["authenticated"] = True
-                            st.session_state["username"] = username
-                            st.session_state["user_data"] = user_data
-                            st.success(message)
-                            st.rerun()
-                        else:
-                            st.error(message)
-                    else:
-                        st.warning("الرجاء إدخال جميع البيانات" if lang == "ar" else "Please fill all fields")
         
         with tab2:
-            # Register Form
+            # Register Form (Kept standard since it's less frequent)
             with st.form("register_form"):
                 new_username = st.text_input(
                     "اسم المستخدم" if lang == "ar" else "Username",
@@ -496,18 +532,15 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
                     else:
                         st.warning("الرجاء إدخال جميع البيانات" if lang == "ar" else "Please fill all fields")
         
-        # Guest mode option
+        # Guest mode option - Uses Callback
         st.markdown("---")
         st.markdown('<div class="guest-btn">', unsafe_allow_html=True)
-        if st.button("👤 تجربة كضيف" if lang == "ar" else "👤 Try as Guest", use_container_width=True, key="guest_btn"):
-            st.session_state["authenticated"] = True
-            st.session_state["username"] = "guest"
-            st.session_state["user_data"] = {
-                "name": "Guest",
-                "plan": "free",
-                "role": "guest"
-            }
-            st.rerun()
+        st.button(
+            "👤 تجربة كضيف" if lang == "ar" else "👤 Try as Guest", 
+            use_container_width=True, 
+            key="guest_btn",
+            on_click=guest_callback
+        )
         st.markdown('</div>', unsafe_allow_html=True)
         
         # Language toggle at bottom

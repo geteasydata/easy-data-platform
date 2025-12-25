@@ -43,38 +43,43 @@ from reports.word_report import create_word_report
 # Integration: Easy Data Ecosystem
 
 
+
 # ==========================================
-# Robust Path Setup
+# Robust Path & Import Setup (SaaS Optimized)
 # ==========================================
+import importlib.util
+
 current_file = pathlib.Path(__file__).resolve()
 current_dir = current_file.parent
-root_path = current_dir.parent  # Easy Data folder
+root_path = current_dir.parent
 
-# Smart Path Detection for DataAnalystProject
-analyst_path = None
-possible_paths = [
-    root_path / 'DataAnalystProject',
-    current_dir / 'DataAnalystProject',  # If inside same dir
-    pathlib.Path('DataAnalystProject').resolve(),
-    pathlib.Path('.').resolve() / 'DataAnalystProject'
-]
-
-for p in possible_paths:
-    if p.exists():
-        analyst_path = p
-        # Add parent directory to sys.path to allow "import DataAnalystProject"
-        if str(p.parent) not in sys.path:
-            sys.path.insert(0, str(p.parent))
-        break
-
+# Define Paths
 brain_path = root_path / 'data_science_master_system'
+analyst_path_dir = root_path / 'DataAnalystProject'
 
-# Add paths if they exist
-for p in [root_path, brain_path, analyst_path]:
-    if p and p.exists() and str(p) not in sys.path:
-        sys.path.append(str(p))
+# 1. Add Core Paths to Sys (for internal dependencies)
+for p in [root_path, brain_path, analyst_path_dir]:
+    if p.exists() and str(p) not in sys.path:
+        sys.path.insert(0, str(p))
 
-# Optional: data_science_master_system
+# 2. Dynamic Module Loader (The "Nuclear" Fix for Cloud Imports)
+def load_module_from_path(name, path):
+    try:
+        if not os.path.exists(path):
+            return None, f"File not found: {path}"
+            
+        spec = importlib.util.spec_from_file_location(name, path)
+        if spec is None:
+            return None, f"Could not load spec for {name}"
+            
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        spec.loader.exec_module(module)
+        return module, None
+    except Exception as e:
+        return None, str(e)
+
+# Optional: Master System Logic
 try:
     from data_science_master_system.logic import (
         AnalyticalLogic, EthicalLogic, EngineeringLogic, CausalLogic
@@ -82,17 +87,46 @@ try:
     HAS_MASTER_SYSTEM = True
 except ImportError:
     HAS_MASTER_SYSTEM = False
-    
-# Import Data Analyst Module with Error Handling
-try:
-    from DataAnalystProject.main import show_data_analyst_path
-except ImportError as e:
-    # Fallback to prevent crash
-    print(f"Error loading DataAnalystProject: {e}")
+
+# Import Data Analyst Module Dynamically
+show_data_analyst_path = None
+analyst_error = None
+
+# Try finding the file in multiple locations (Cloud structure resilience)
+possible_analyst_files = [
+    root_path / 'DataAnalystProject' / 'main.py',
+    current_dir / 'DataAnalystProject' / 'main.py',
+    root_path / 'easy-data-platform' / 'DataAnalystProject' / 'main.py', # Git repo name case
+    pathlib.Path('DataAnalystProject/main.py').resolve()
+]
+
+found_analyst = False
+for p in possible_paths: # Fix: Use the paths derived above or define new list
+    pass
+
+for target_file in possible_analyst_files:
+    if target_file.exists():
+        analyst_module, err = load_module_from_path("DataAnalystProject.main", str(target_file))
+        if analyst_module:
+            try:
+                show_data_analyst_path = analyst_module.show_data_analyst_path
+                found_analyst = True
+                break
+            except AttributeError:
+                analyst_error = "Module loaded but function 'show_data_analyst_path' missing."
+        else:
+            analyst_error = err
+            
+# Fallback if critical failure
+if not found_analyst:
+    print(f"DataAnalystProject load failed. Error: {analyst_error}")
     def show_data_analyst_path():
-        st.error("⚠️ Critical Error: Could not load Analyst Module.")
-        with st.expander("Debug Info (Share with Developer)"):
-            st.code(f"Error: {e}\n\nSys Path: {sys.path}\n\nCWD: {os.getcwd()}\n\nDir Contents: {os.listdir(os.getcwd()) if os.path.exists(os.getcwd()) else 'N/A'}")
+        st.error("⚠️ System Error: Data Analyst Module Unavailable")
+        st.warning(f"Technical Details: {analyst_error}")
+        with st.expander("Diagnostic Info"):
+            st.write(f"Searched locations: {[str(p) for p in possible_analyst_files]}")
+            st.write(f"Current Dir: {os.getcwd()}")
+            st.write(f"Dir Contents: {os.listdir(os.getcwd())}")
 
 # Page Config
 st.set_page_config(
@@ -101,6 +135,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
 
 # Custom CSS for modern look
 st.markdown("""
