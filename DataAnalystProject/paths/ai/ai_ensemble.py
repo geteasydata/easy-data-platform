@@ -39,9 +39,9 @@ class AIEnsemble:
     """
     
     # Default API keys (user provided)
-    DEFAULT_GROQ_KEY = "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"
-    DEFAULT_DEEPSEEK_KEY = "sk-0d8b9806c944495387bd466460a53932"
-    DEFAULT_GEMINI_KEY = "AIzaSyC_0gsd0E7_Xf3g64ReTlVCvrgM7m2spwE"
+    DEFAULT_GROQ_KEY = os.environ.get("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY")
+    DEFAULT_DEEPSEEK_KEY = os.environ.get("DEEPSEEK_API_KEY") or st.secrets.get("DEEPSEEK_API_KEY")
+    DEFAULT_GEMINI_KEY = os.environ.get("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY")
     
     def __init__(self):
         """Initialize all AI providers automatically."""

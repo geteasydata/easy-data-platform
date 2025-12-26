@@ -45,7 +45,7 @@ class AIAssistant:
     """
     
     # Default API key for Gemini (shared with AI_Expert_App)
-    DEFAULT_GEMINI_KEY = "AIzaSyC_0gsd0E7_Xf3g64ReTlVCvrgM7m2spwE"
+    DEFAULT_GEMINI_KEY = os.environ.get("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY")
     
     def __init__(self, 
                  api_key: str = None,
