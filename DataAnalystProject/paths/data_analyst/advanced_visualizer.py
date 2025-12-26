@@ -141,8 +141,14 @@ class AdvancedVisualizer:
                          color_col: str = None,
                          title: str = "Geographic Scatter") -> go.Figure:
         """Create scatter map using coordinates"""
+        plot_df = df.copy()
+        
+        # Handle NaNs in size column
+        if size_col and size_col in plot_df.columns:
+            plot_df[size_col] = plot_df[size_col].fillna(0)
+            
         fig = px.scatter_geo(
-            df,
+            plot_df,
             lat=lat_col,
             lon=lon_col,
             size=size_col,
