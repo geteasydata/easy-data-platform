@@ -8,6 +8,7 @@ import json
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
 import pandas as pd
+import streamlit as st
 
 # Try to import AI libraries
 try:
