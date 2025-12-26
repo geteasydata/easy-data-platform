@@ -190,6 +190,99 @@ st.markdown("""
         transform: translateY(-5px);
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
     }
+    
+    /* ========================================= */
+    /* MOBILE RESPONSIVE STYLES                  */
+    /* ========================================= */
+    
+    /* Mobile viewport fix */
+    @media screen and (max-width: 768px) {
+        /* Fix main container for mobile */
+        .main .block-container {
+            padding: 0.5rem 1rem 1rem 1rem !important;
+            margin-top: 0 !important;
+            max-width: 100% !important;
+            border-radius: 0 !important;
+            border: none !important;
+        }
+        
+        /* Fix header visibility on mobile */
+        header[data-testid="stHeader"] {
+            display: block !important;
+            background-color: #020617 !important;
+        }
+        
+        /* Mobile-friendly buttons */
+        .stButton > button {
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+            min-height: 44px; /* Touch-friendly */
+        }
+        
+        /* Mobile typography */
+        h1 {
+            font-size: 1.5rem !important;
+        }
+        h2 {
+            font-size: 1.25rem !important;
+        }
+        h3 {
+            font-size: 1.1rem !important;
+        }
+        
+        /* Mobile columns stack */
+        [data-testid="column"] {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+        }
+        
+        /* Fix file uploader on mobile */
+        [data-testid="stFileUploader"] {
+            min-height: 100px;
+        }
+        
+        /* Mobile sidebar overlay */
+        [data-testid="stSidebar"] {
+            z-index: 9999 !important;
+        }
+        
+        /* Fix selectbox dropdown on mobile */
+        .stSelectbox > div > div {
+            min-height: 44px !important;
+        }
+        
+        /* Disable hover effects on mobile (performance) */
+        div[data-testid="stMarkdownContainer"] div:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Fix expander on mobile */
+        .streamlit-expanderHeader {
+            padding: 0.75rem !important;
+        }
+        
+        /* Mobile cards */
+        [data-testid="stMarkdownContainer"] > div {
+            height: auto !important;
+            min-height: 200px !important;
+        }
+    }
+    
+    /* Extra small screens (phones) */
+    @media screen and (max-width: 480px) {
+        .main .block-container {
+            padding: 0.25rem 0.5rem 0.5rem 0.5rem !important;
+        }
+        
+        h1 {
+            font-size: 1.3rem !important;
+        }
+        
+        .stButton > button {
+            font-size: 0.85rem;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
