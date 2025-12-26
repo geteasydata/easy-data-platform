@@ -52,15 +52,26 @@ class AdvancedVisualizer:
         """Create Sankey diagram for flow analysis"""
         if not all([source_col, target_col, value_col]):
             return None
+        
+        # Aggregate data to reduce number of links (performance optimization)
+        try:
+            agg_df = df.groupby([source_col, target_col])[value_col].sum().reset_index()
+        except:
+            # If aggregation fails, sample the data
+            agg_df = df[[source_col, target_col, value_col]].head(1000)
+        
+        # Limit to top 50 flows to prevent browser hang
+        if len(agg_df) > 50:
+            agg_df = agg_df.nlargest(50, value_col)
             
         # Create labels
-        sources = df[source_col].unique().tolist()
-        targets = df[target_col].unique().tolist()
+        sources = agg_df[source_col].unique().tolist()
+        targets = agg_df[target_col].unique().tolist()
         label_list = list(set(sources + targets))
         
         # Create indices
-        source_indices = [label_list.index(s) for s in df[source_col]]
-        target_indices = [label_list.index(t) for t in df[target_col]]
+        source_indices = [label_list.index(s) for s in agg_df[source_col]]
+        target_indices = [label_list.index(t) for t in agg_df[target_col]]
         
         fig = go.Figure(data=[go.Sankey(
             node=dict(
@@ -73,7 +84,7 @@ class AdvancedVisualizer:
             link=dict(
                 source=source_indices,
                 target=target_indices,
-                value=df[value_col]
+                value=agg_df[value_col]
             )
         )])
         
@@ -86,8 +97,15 @@ class AdvancedVisualizer:
                         color: str = None,
                         title: str = "3D Scatter Plot") -> go.Figure:
         """Create 3D scatter plot"""
+        # Sample data if too large (performance optimization)
+        max_points = 5000
+        if len(df) > max_points:
+            plot_df = df.sample(n=max_points, random_state=42)
+        else:
+            plot_df = df
+            
         fig = px.scatter_3d(
-            df, x=x, y=y, z=z,
+            plot_df, x=x, y=y, z=z,
             color=color,
             title=title,
             opacity=0.7
