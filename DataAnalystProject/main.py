@@ -357,6 +357,12 @@ def show_sidebar():
         if new_lang != current_lang:
             st.session_state.lang = new_lang
             st.rerun()
+        
+        # Back to home button
+        if st.button("🏠 " + ("Back to Home" if lang == 'en' else "العودة للرئيسية"), key="back_to_home_analyst", use_container_width=True):
+            st.session_state.app_mode = None
+            st.session_state.path = None
+            st.rerun()
             
         st.markdown("---")
 
@@ -367,6 +373,7 @@ def show_sidebar():
         st.markdown(f"**{t('current_path', lang)}:** {current_path}")
         if st.button(t('switch_path', lang)):
             st.session_state.path = None
+            st.session_state.app_mode = None  # Also reset app_mode for main app compatibility
             st.session_state.analysis_complete = False
             st.rerun()
         

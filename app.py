@@ -375,28 +375,30 @@ def main():
         col_sci, col_ana = st.columns(2)
         
         with col_sci:
+            # Scientific Path Card
             st.markdown(f"""
-            <a href="?mode=scientist&lang={lang}" target="_self" style="text-decoration: none;">
-                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(99, 102, 241, 0.2); padding: 2rem 1.5rem; border-radius: 20px; color: white; text-align: center; height: 260px; transition: transform 0.3s; cursor: pointer; display: flex; flex-direction: column; justify-content: center;">
+                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(99, 102, 241, 0.2); padding: 2rem 1.5rem; border-radius: 20px; color: white; text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔬</div>
                     <h2 style="color: #a5b4fc !important; font-size: 1.5rem; margin-bottom: 0.5rem;">{'Scientific Path' if lang == 'en' else 'المسار العلمي'}</h2>
                     <p style="color: #cbd5e1 !important; font-size: 0.9rem; line-height: 1.4;">{'AutoML, Predictive Modeling, and Risk Discovery.<br>For replacing Data Science teams.' if lang == 'en' else 'التحليل التنبئي، بناء النماذج، واكتشاف المخاطر.<br>بديل فريق علوم البيانات.'}</p>
-                    <div style="margin-top: 1rem; color: #818cf8; font-weight: bold; font-size: 0.8rem;">{'Click to Start ➔' if lang == 'en' else 'اضغط للبدء ⬅'}</div>
                 </div>
-            </a>
             """, unsafe_allow_html=True)
+            if st.button("🔬 " + ("Start Scientific Path" if lang == 'en' else "ابدأ المسار العلمي"), key="btn_scientist", use_container_width=True):
+                st.session_state.app_mode = 'scientist'
+                st.rerun()
                 
         with col_ana:
+            # Analytical Path Card
             st.markdown(f"""
-            <a href="?mode=analyst&lang={lang}" target="_self" style="text-decoration: none;">
-                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(20, 184, 166, 0.2); padding: 2rem 1.5rem; border-radius: 20px; color: white; text-align: center; height: 260px; transition: transform 0.3s; cursor: pointer; display: flex; flex-direction: column; justify-content: center;">
+                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(20, 184, 166, 0.2); padding: 2rem 1.5rem; border-radius: 20px; color: white; text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📊</div>
                     <h2 style="color: #5eead4 !important; font-size: 1.5rem; margin-bottom: 0.5rem;">{'Analytical Path' if lang == 'en' else 'المسار التحليلي'}</h2>
                     <p style="color: #cbd5e1 !important; font-size: 0.9rem; line-height: 1.4;">{'Traditional ETL, Dashboards, and Reports.<br>For replacing Analyst teams.' if lang == 'en' else 'تنظيف البيانات، لوحات المعلومات، والتقارير.<br>بديل فريق محللي البيانات.'}</p>
-                     <div style="margin-top: 1rem; color: #2dd4bf; font-weight: bold; font-size: 0.8rem;">{'Click to Start ➔' if lang == 'en' else 'اضغط للبدء ⬅'}</div>
                 </div>
-            </a>
             """, unsafe_allow_html=True)
+            if st.button("📊 " + ("Start Analytical Path" if lang == 'en' else "ابدأ المسار التحليلي"), key="btn_analyst", use_container_width=True):
+                st.session_state.app_mode = 'analyst'
+                st.rerun()
         return
 
     # If Analyst path is chosen, we switch logic
@@ -422,6 +424,13 @@ def main():
     lang = st.session_state.lang
     
     with st.sidebar:
+        # Back button to return to path selection
+        if st.button("🏠 " + ("Back to Home" if lang == 'en' else "العودة للرئيسية"), key="back_to_home_sci", use_container_width=True):
+            st.session_state.app_mode = None
+            st.rerun()
+        
+        st.markdown("---")
+        
         # Expert Settings
         with st.expander("⚙️ " + ("إعدادات الخبير" if lang == 'ar' else "Expert Settings")):
             random_seed = st.number_input(
