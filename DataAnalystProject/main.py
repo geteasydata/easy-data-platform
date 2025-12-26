@@ -463,6 +463,9 @@ def show_data_upload():
                 # Preview
                 with st.expander(t('data_preview', lang), expanded=True):
                     st.dataframe(st.session_state.df.head(10), use_container_width=True)
+                
+                # Auto-transition to analysis tabs
+                st.rerun()
             
             except Exception as e:
                 st.error(f"{t('error_loading', lang)}: {e}")
