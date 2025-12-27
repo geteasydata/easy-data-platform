@@ -97,194 +97,29 @@ st.set_page_config(
 )
 
 
-# Custom CSS for modern look
-st.markdown("""
+def load_css():
+    """Load global CSS from assets/style.css"""
+    css_file = pathlib.Path(__file__).parent / "assets" / "style.css"
+    try:
+        with open(css_file, "r") as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.error("CSS file not found. Please ensure assets/style.css exists.")
 
+def custom_footer():
+    """Display a professional custom footer"""
+    st.markdown("""
+    <div class="custom-footer">
+        <span>© 2025 Easy Data AI. All rights reserved.</span>
+        <span style="margin: 0 10px;">•</span>
+        <a href="#" target="_blank">Privacy Policy</a>
+        <span style="margin: 0 10px;">•</span>
+        <a href="#" target="_blank">Terms of Service</a>
+        <span style="margin: 0 10px;">•</span>
+        <a href="mailto:support@easydata.ai">Contact Support</a>
+    </div>
+    """, unsafe_allow_html=True)
 
-<style>
-    /* Main background - Harmonized Dark Theme */
-    .stApp {
-        background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
-        color: #e2e8f0;
-    }
-
-    /* Hide Streamlit Header and Footer - RESTORED HEADER FOR SIDEBAR ACCESS */
-    /* header[data-testid="stHeader"] {
-        display: none !important;
-    } */
-    div[data-testid="stDecoration"] {
-        display: none !important;
-    }
-    footer {
-        display: none !important;
-    }
-    
-    .main .block-container {
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        padding: 1rem 2rem 2rem 2rem !important; /* Force reduced top padding */
-        margin-top: -4rem !important; /* Force pull up */
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        max-width: 90% !important;
-    }
-    
-    /* Buttons - Elegant Indigo */
-    .stButton > button {
-        width: 100%;
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
-        font-weight: 500;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
-        background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-        border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    /* Sidebar - Seamless Integration */
-    [data-testid="stSidebar"] {
-        background-color: #020617;
-        border-right: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    /* Typography */
-    h1, h2, h3 {
-        color: #f8fafc !important;
-        font-family: 'Inter', sans-serif;
-    }
-    
-    p {
-        color: #94a3b8 !important;
-    }
-    
-    /* Input Fields */
-    .stTextInput > div > div > input, .stSelectbox > div > div > div {
-        background-color: rgba(30, 41, 59, 0.5) !important;
-        color: #e2e8f0 !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 8px !important;
-    }
-    
-    /* Expander */
-    .streamlit-expanderHeader {
-        background-color: rgba(30, 41, 59, 0.3) !important;
-        border: 1px solid rgba(255, 255, 255, 0.05) !important;
-        border-radius: 8px !important;
-        color: #e2e8f0 !important;
-    }
-    
-    /* Hover effect for clickable cards */
-    div[data-testid="stMarkdownContainer"] div:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-    }
-    
-    /* ========================================= */
-    /* MOBILE RESPONSIVE STYLES                  */
-    /* ========================================= */
-    
-    /* Mobile viewport fix */
-    @media screen and (max-width: 768px) {
-        /* Fix main container for mobile */
-        .main .block-container {
-            padding: 0.5rem 1rem 1rem 1rem !important;
-            margin-top: 0 !important;
-            max-width: 100% !important;
-            border-radius: 0 !important;
-            border: none !important;
-        }
-        
-        /* Fix header visibility on mobile */
-        header[data-testid="stHeader"] {
-            display: block !important;
-            background-color: #020617 !important;
-        }
-        
-        /* Mobile-friendly buttons */
-        .stButton > button {
-            padding: 0.6rem 1rem;
-            font-size: 0.9rem;
-            min-height: 44px; /* Touch-friendly */
-        }
-        
-        /* Mobile typography */
-        h1 {
-            font-size: 1.5rem !important;
-        }
-        h2 {
-            font-size: 1.25rem !important;
-        }
-        h3 {
-            font-size: 1.1rem !important;
-        }
-        
-        /* Mobile columns stack */
-        [data-testid="column"] {
-            width: 100% !important;
-            flex: 1 1 100% !important;
-        }
-        
-        /* Fix file uploader on mobile */
-        [data-testid="stFileUploader"] {
-            min-height: 100px;
-        }
-        
-        /* Mobile sidebar overlay */
-        [data-testid="stSidebar"] {
-            z-index: 9999 !important;
-        }
-        
-        /* Fix selectbox dropdown on mobile */
-        .stSelectbox > div > div {
-            min-height: 44px !important;
-        }
-        
-        /* Disable hover effects on mobile (performance) */
-        div[data-testid="stMarkdownContainer"] div:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        
-        /* Fix expander on mobile */
-        .streamlit-expanderHeader {
-            padding: 0.75rem !important;
-        }
-        
-        /* Mobile cards */
-        [data-testid="stMarkdownContainer"] > div {
-            height: auto !important;
-            min-height: 200px !important;
-        }
-    }
-    
-    /* Extra small screens (phones) */
-    @media screen and (max-width: 480px) {
-        .main .block-container {
-            padding: 0.25rem 0.5rem 0.5rem 0.5rem !important;
-        }
-        
-        h1 {
-            font-size: 1.3rem !important;
-        }
-        
-        .stButton > button {
-            font-size: 0.85rem;
-        }
-    }
-</style>
-""", unsafe_allow_html=True)
 
 
 def metric_card(label, value, icon="📊"):
@@ -299,6 +134,7 @@ def metric_card(label, value, icon="📊"):
 
 
 def main():
+    load_css()
     # Session state initialization
     if 'lang' not in st.session_state:
         st.session_state.lang = None
@@ -377,10 +213,10 @@ def main():
         with col_sci:
             # Scientific Path Card
             st.markdown(f"""
-                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(99, 102, 241, 0.2); padding: 2rem 1.5rem; border-radius: 20px; color: white; text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
-                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔬</div>
+                <div class="custom-card" style="text-align: center; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔬</div>
                     <h2 style="color: #a5b4fc !important; font-size: 1.5rem; margin-bottom: 0.5rem;">{'Scientific Path' if lang == 'en' else 'المسار العلمي'}</h2>
-                    <p style="color: #cbd5e1 !important; font-size: 0.9rem; line-height: 1.4;">{'AutoML, Predictive Modeling, and Risk Discovery.<br>For replacing Data Science teams.' if lang == 'en' else 'التحليل التنبئي، بناء النماذج، واكتشاف المخاطر.<br>بديل فريق علوم البيانات.'}</p>
+                    <p style="color: #cbd5e1 !important; font-size: 0.95rem; line-height: 1.5;">{'AutoML, Predictive Modeling, and Risk Discovery.<br>For replacing Data Science teams.' if lang == 'en' else 'التحليل التنبئي، بناء النماذج، واكتشاف المخاطر.<br>بديل فريق علوم البيانات.'}</p>
                 </div>
             """, unsafe_allow_html=True)
             if st.button("🔬 " + ("Start Scientific Path" if lang == 'en' else "ابدأ المسار العلمي"), key="btn_scientist", use_container_width=True):
@@ -390,10 +226,10 @@ def main():
         with col_ana:
             # Analytical Path Card
             st.markdown(f"""
-                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(20, 184, 166, 0.2); padding: 2rem 1.5rem; border-radius: 20px; color: white; text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
-                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📊</div>
+                <div class="custom-card" style="text-align: center; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
                     <h2 style="color: #5eead4 !important; font-size: 1.5rem; margin-bottom: 0.5rem;">{'Analytical Path' if lang == 'en' else 'المسار التحليلي'}</h2>
-                    <p style="color: #cbd5e1 !important; font-size: 0.9rem; line-height: 1.4;">{'Traditional ETL, Dashboards, and Reports.<br>For replacing Analyst teams.' if lang == 'en' else 'تنظيف البيانات، لوحات المعلومات، والتقارير.<br>بديل فريق محللي البيانات.'}</p>
+                    <p style="color: #cbd5e1 !important; font-size: 0.95rem; line-height: 1.5;">{'Traditional ETL, Dashboards, and Reports.<br>For replacing Analyst teams.' if lang == 'en' else 'تنظيف البيانات، لوحات المعلومات، والتقارير.<br>بديل فريق محللي البيانات.'}</p>
                 </div>
             """, unsafe_allow_html=True)
             if st.button("📊 " + ("Start Analytical Path" if lang == 'en' else "ابدأ المسار التحليلي"), key="btn_analyst", use_container_width=True):
@@ -1396,6 +1232,7 @@ def show_results(data, lang):
                     st.error(f"❌ خطأ في التنبؤ: {str(e)}")
     
     st.success(t('success_message', lang))
+    custom_footer()
 
 
 if __name__ == "__main__":

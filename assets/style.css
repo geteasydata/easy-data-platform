@@ -1,0 +1,360 @@
+/* Global Settings & Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #6366f1;
+    --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    --secondary-color: #8b5cf6;
+    --bg-color: #020617;
+    --card-bg: rgba(30, 41, 59, 0.4);
+    --text-color: #e2e8f0;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+html,
+body,
+[class*="css"] {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+}
+
+/* Main Background */
+.stApp {
+    background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+}
+
+/* Hide Streamlit Branding - AGGRESSIVE */
+#MainMenu {
+    visibility: hidden !important;
+}
+
+footer {
+    visibility: hidden !important;
+}
+
+header {
+    visibility: hidden !important;
+}
+
+/* Hide specific elements */
+div[data-testid="stDecoration"] {
+    display: none !important;
+}
+
+div[data-testid="stStatusWidget"] {
+    display: none !important;
+}
+
+.stDeployButton {
+    display: none !important;
+}
+
+[data-testid="stToolbar"] {
+    display: none !important;
+}
+
+[data-testid="stManageApp"] {
+    display: none !important;
+}
+
+div[class*="stToolbar"] {
+    display: none !important;
+}
+
+div[class*="viewerBadge"] {
+    display: none !important;
+}
+
+/* Hide GitHub Icon and other header actions */
+[data-testid="stHeaderActionElements"] {
+    display: none !important;
+}
+
+/* Ensure Sidebar Toggle remains visible if needed, but the header background is gone */
+/* We might need to implement a custom sidebar toggle if we hide the header completely.
+   However, removing 'header' usually removes the hamburger.
+   If the user wants NO Streamlit branding, they might accept losing the hamburger 
+   and relying on our custom UI navigation, OR we hide the items inside the header. */
+
+/* Approach 2: Hide contents of header except what we want (which is nothing default) */
+header[data-testid="stHeader"] {
+    background: transparent !important;
+    color: transparent !important;
+}
+
+header[data-testid="stHeader"]>div:first-child {
+    display: none !important;
+    /* Hides the decoration line */
+}
+
+/* Hide the hamburger menu explicitly */
+button[kind="header"] {
+    display: none !important;
+}
+
+[data-testid="baseButton-header"] {
+    display: none !important;
+}
+
+/* Hide top right buttons (GitHub, Deploy, etc) */
+.stApp>header>div:nth-child(1)>div:nth-child(1)>div:nth-child(2) {
+    display: none !important;
+}
+
+/* Modern Container */
+.block-container {
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+    max-width: 95% !important;
+}
+
+/* Custom Cards */
+.custom-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+    color: #f8fafc !important;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+/* Buttons */
+.stButton>button {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.stButton>button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.stButton>button:active {
+    transform: translateY(0);
+}
+
+/* Inputs */
+.stTextInput>div>div>input,
+.stSelectbox>div>div>div,
+.stTextArea>div>div>textarea {
+    background-color: rgba(15, 23, 42, 0.6) !important;
+    color: white !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px !important;
+}
+
+.stTextInput>div>div>input:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+}
+
+/* Footer */
+.custom-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(2, 6, 23, 0.9);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border-color);
+    padding: 1rem;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.custom-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.custom-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: rgba(2, 6, 23, 0.95);
+    border-right: 1px solid var(--border-color);
+}
+
+[data-testid="stSidebarNav"] {
+    padding-top: 1rem;
+}
+
+/* Expander */
+.streamlit-expanderHeader {
+    background-color: rgba(30, 41, 59, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px !important;
+    color: #e2e8f0 !important;
+}
+
+/* Tabs */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background-color: transparent;
+}
+
+.stTabs [data-baseweb="tab"] {
+    height: 3rem;
+    white-space: nowrap;
+    background-color: transparent;
+    border-radius: 8px;
+    color: #94a3b8;
+}
+
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
+    background-color: rgba(99, 102, 241, 0.1);
+    color: #818cf8;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .block-container {
+        padding: 1rem;
+        padding-bottom: 60px;
+        /* Space for footer */
+    }
+
+    h1 {
+        font-size: 1.75rem !important;
+    }
+
+    h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .stButton>button {
+        padding: 0.5rem 1rem;
+        min-height: 44px;
+        /* Touch target */
+    }
+
+    [data-testid="stSidebar"] {
+        z-index: 1000;
+        /* Ensure sidebar is restartable overlay */
+    }
+}
+
+/* Auth Specific Classes */
+.auth-container {
+    max-width: 450px;
+    margin: 2vh auto 2rem auto;
+    text-align: center;
+}
+
+.auth-header {
+    margin-bottom: 2rem;
+}
+
+.auth-logo {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    animation: float 6s ease-in-out infinite;
+    display: inline-block;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.guest-btn {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.guest-btn button {
+    background: transparent !important;
+    border: 1px solid var(--primary-color) !important;
+}
+
+.guest-btn button:hover {
+    background: rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Login Form Specifics */
+[data-testid="stForm"] {
+    max-width: 450px;
+    margin: 0 auto;
+    background: rgba(30, 41, 59, 0.7) !important;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(139, 92, 246, 0.15) !important;
+    border-radius: 24px !important;
+    padding: 2rem !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+.auth-header {
+    margin-bottom: 2rem;
+}
+
+.auth-logo {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.guest-btn {
+    margin-top: 1.5rem;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.guest-btn:hover {
+    opacity: 1;
+}

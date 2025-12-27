@@ -218,115 +218,14 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
     Returns user data if logged in, None otherwise
     """
     
-    # Original Easy Data Design CSS
+    # Header with Logo (Styled via assets/style.css)
     st.markdown("""
-    <style>
-    /* Dark Purple Background */
-    .stApp {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    }
-    
-    /* Hide Streamlit defaults */
-    header[data-testid="stHeader"] { display: none !important; }
-    footer { display: none !important; }
-    div[data-testid="stDecoration"] { display: none !important; }
-    #MainMenu { display: none !important; }
-    
-    .main .block-container {
-        padding-top: 2rem !important;
-        max-width: 600px !important;
-        margin: 0 auto !important;
-    }
-    
-    /* Form container styling */
-    [data-testid="stForm"] {
-        background: rgba(30, 30, 50, 0.8) !important;
-        border: 1px solid rgba(138, 43, 226, 0.3) !important;
-        border-radius: 10px !important;
-        padding: 1.5rem !important;
-    }
-    
-    /* Input fields */
-    .stTextInput > div > div > input {
-        background-color: rgba(50, 50, 80, 0.8) !important;
-        color: white !important;
-        border: 1px solid rgba(138, 43, 226, 0.4) !important;
-        border-radius: 5px !important;
-    }
-    
-    .stTextInput > div > div > input:focus {
-        border-color: #8a2be2 !important;
-        box-shadow: 0 0 0 1px #8a2be2 !important;
-    }
-    
-    .stTextInput > div > div > input::placeholder {
-        color: #888 !important;
-    }
-    
-    /* Labels */
-    .stTextInput label {
-        color: #ccc !important;
-    }
-    
-    /* Tabs styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background: transparent;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        background: transparent !important;
-        color: #aaa !important;
-        border: none !important;
-        padding: 10px 20px !important;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background: rgba(138, 43, 226, 0.2) !important;
-        color: #fff !important;
-        border-radius: 5px !important;
-    }
-    
-    /* Buttons */
-    .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 5px !important;
-        padding: 0.5rem 1rem !important;
-        font-weight: 500 !important;
-    }
-    
-    .stButton > button:hover {
-        opacity: 0.9 !important;
-    }
-    
-    /* Form submit button */
-    .stFormSubmitButton > button {
-        background: rgba(80, 80, 120, 0.8) !important;
-        color: white !important;
-        border: 1px solid rgba(138, 43, 226, 0.4) !important;
-        border-radius: 5px !important;
-        width: 100% !important;
-    }
-    
-    /* Guest button styling */
-    .guest-btn button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important;
-        border: none !important;
-        font-size: 1rem !important;
-    }
-    
-    </style>
-    """, unsafe_allow_html=True)
-    
-    # Header with Logo
-    st.markdown("""
-    <div style="text-align: center; padding: 2rem 0 1rem 0;">
-        <div style="font-size: 2.5rem; color: #8a2be2;">💎</div>
-        <h1 style="color: #8a2be2; font-size: 2rem; margin: 0.5rem 0;">Easy Data</h1>
-        <p style="color: #888; font-size: 0.9rem;">AI-Powered Data Analysis Platform</p>
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="auth-logo">💎</div>
+            <h1>Easy Data</h1>
+            <p style="color: #94a3b8;">AI-Powered Data Analysis Platform</p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -396,7 +295,6 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        st.markdown('<div class="guest-btn">', unsafe_allow_html=True)
         if st.button("🎭 Try as Guest", use_container_width=True, key="guest_btn_orig"):
             st.session_state.update({
                 "authenticated": True,
@@ -404,7 +302,6 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
                 "user_data": {"name": "Guest", "plan": "free", "role": "guest"}
             })
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
     
     # Language toggle
     st.markdown("<br>", unsafe_allow_html=True)

@@ -9,6 +9,7 @@ import pandas as pd
 import json
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import streamlit as st
 
 # Try to import Groq
 try:
@@ -367,6 +368,7 @@ class AIEnsemble:
 # Create singleton instance
 _ensemble_instance = None
 
+@st.cache_resource
 def get_ensemble() -> AIEnsemble:
     """Get or create the AI Ensemble instance."""
     global _ensemble_instance
