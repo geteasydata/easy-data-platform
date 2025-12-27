@@ -461,7 +461,7 @@ def show_data_upload():
                 
                 # Check file size/lines quickly without loading everything
                 # Register the file content as a view
-                success = st.session_state.duck_engine.register_file(str(temp_path), table_name='current_data')
+                success, error_msg = st.session_state.duck_engine.register_file(str(temp_path), table_name='current_data')
                 
                 if success:
                     # Get robust stats and SAMPLE
@@ -488,7 +488,7 @@ def show_data_upload():
                     # Auto-transition to analysis tabs
                     st.rerun()
                 else:
-                    st.error("Failed to register data with analytics engine.")
+                    st.error(f"Failed to register data with analytics engine: {error_msg}")
             
             except Exception as e:
                 st.error(f"{t('error_loading', lang)}: {e}")
