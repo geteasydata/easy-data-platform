@@ -571,6 +571,10 @@ def show_maintenance_tab():
     st.markdown("### 🛡️ " + ("Maintenance Center" if lang == 'en' else "مركز الصيانة الذكية"))
     st.info("AI Sentinel is monitoring the platform for errors." if lang == 'en' else "الحارس الذكي يراقب المنصة بحثاً عن أي أخطاء.")
     
+    # Test Button
+    if st.button("🧪 " + ("Trigger Test Error" if lang == 'en' else "تحفيز خطأ تجريبي")):
+        raise ValueError("AI Sentinel Test: This is a simulated crash to verify the guardian system.")
+    
     # Load logs
     try:
         with open(sentinel.log_path, 'r', encoding='utf-8') as f:
