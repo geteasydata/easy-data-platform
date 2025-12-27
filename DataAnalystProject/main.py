@@ -606,7 +606,11 @@ def show_data_analyst_path():
     is_admin = False
     if 'user_data' in st.session_state:
         # Check role in user_data OR explicit username
-        is_admin = st.session_state.user_data.get('role') == 'admin' or st.session_state.get('username') == 'admin' or st.session_state.get('username') == 'Admin'
+        is_admin = (
+            st.session_state.user_data.get('role') == 'admin' or 
+            st.session_state.get('username') in ['admin', 'Admin', 'sameh', 'samehsamir599@gmail.com'] or
+            st.session_state.user_data.get('username') in ['admin', 'sameh']
+        )
         
     if HAS_NEW_FEATURES and is_admin:
         tabs.append("🛡️ Maintenance" if lang == 'en' else "🛡️ الصيانة الذكية")

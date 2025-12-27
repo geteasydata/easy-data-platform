@@ -220,7 +220,11 @@ def main():
     is_admin = False
     if st.session_state.get("authenticated", False):
         user = st.session_state.get("user_data", {})
-        is_admin = user.get('role') == 'admin' or st.session_state.get('username') == 'admin' or st.session_state.get('username') == 'Admin'
+        is_admin = (
+            user.get('role') == 'admin' or 
+            st.session_state.get('username') in ['admin', 'Admin', 'sameh', 'samehsamir599@gmail.com'] or
+            user.get('username') in ['admin', 'sameh']
+        )
 
     if 'show_global_maintenance' not in st.session_state:
         st.session_state.show_global_maintenance = False
