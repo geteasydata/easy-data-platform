@@ -99,12 +99,45 @@ st.set_page_config(
 
 def load_css():
     """Load global CSS from assets/style.css"""
+    # Load external CSS
     css_file = pathlib.Path(__file__).parent / "assets" / "style.css"
     try:
         with open(css_file, "r") as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     except FileNotFoundError:
         st.error("CSS file not found. Please ensure assets/style.css exists.")
+
+    # FORCE HIDE STREAMLIT BRANDING (Direct Injection)
+    st.markdown("""
+        <style>
+        /* Hide Header and Footer strictly */
+        header[data-testid="stHeader"] {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        
+        #MainMenu {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        
+        footer {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        
+        /* Hide Github Icon and Toolbar specifically */
+        .st-emotion-cache-15ecox0 { display: none !important; } /* Common wrapper */
+        [data-testid="stToolbar"] { display: none !important; }
+        [data-testid="stHeaderActionElements"] { display: none !important; }
+        
+        /* Hide Decoration Bar */
+        div[data-testid="stDecoration"] { display: none !important; }
+        
+        /* Hide Status Widgets */
+        div[data-testid="stStatusWidget"] { display: none !important; }
+        </style>
+    """, unsafe_allow_html=True)
 
 def custom_footer():
     """Display a professional custom footer"""
