@@ -564,51 +564,10 @@ def show_advanced_viz_tab(df):
     st.caption("This module is under development.")
 
 def show_maintenance_tab():
-    """Admin interface for monitoring and repairing the app"""
+    """Display the AI Sentinel UI."""
     lang = get_lang()
     sentinel = get_sentinel()
-    
-    st.markdown("### 🛡️ " + ("Maintenance Center" if lang == 'en' else "مركز الصيانة الذكية"))
-    st.info("AI Sentinel is monitoring the platform for errors." if lang == 'en' else "الحارس الذكي يراقب المنصة بحثاً عن أي أخطاء.")
-    
-    # Test Button
-    if st.button("🧪 " + ("Trigger Test Error" if lang == 'en' else "تحفيز خطأ تجريبي")):
-        raise ValueError("AI Sentinel Test: This is a simulated crash to verify the guardian system.")
-    
-    # Load logs
-    try:
-        with open(sentinel.log_path, 'r', encoding='utf-8') as f:
-            logs = json.load(f)
-    except:
-        logs = []
-        
-    if not logs:
-        st.success("No system errors detected recently." if lang == 'en' else "لم يتم رصد أي أخطاء في النظام مؤخراً.")
-        return
-        
-    for log in logs:
-        with st.expander(f"{'🔴' if log['status']=='new' else '🔍'} {log['type']}: {log['message'][:50]}... ({log['timestamp'][:16]})"):
-            st.code(log['traceback'], language='python')
-            
-            st.markdown("---")
-            col1, col2 = st.columns([1, 2])
-            
-            with col1:
-                if st.button(f"Analyze with AI" if lang == 'en' else "تحليل بالذكاء الاصطناعي", key=f"analyze_{log['id']}"):
-                    with st.spinner("Gemini is diagnosing..."):
-                        if sentinel.analyze_error(log['id']):
-                            st.success("Diagnosis Complete!" if lang == 'en' else "اكتمل التشخيص!")
-                            st.rerun()
-                            
-            with col2:
-                if log['status'] == 'analyzed':
-                    st.markdown("**AI Diagnosis:**")
-                    st.write(log['diagnosis'])
-                    if log['suggested_fix']:
-                        st.markdown("**Suggested Fix:**")
-                        st.code(log['suggested_fix'], language='python')
-                        if st.button("Apply Fix (Coming Soon)" if lang == 'en' else "تطبيق الإصلاح (قريباً)", key=f"apply_{log['id']}"):
-                            st.info("Automatic patching is being calibrated." if lang == 'en' else "يتم الآن معايرة نظام الترقيع التلقائي.")
+    sentinel.show_maintenance_ui(lang)
 
 
 def show_knowledge_hub(lang):

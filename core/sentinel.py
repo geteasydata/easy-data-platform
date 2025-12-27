@@ -17,6 +17,52 @@ class AISentinel:
     Catches errors, analyzes with AI, and logs for maintenance.
     """
     
+    def show_maintenance_ui(self, lang: str = "en"):
+        """Display the maintenance dashboard in Streamlit."""
+        st.markdown("### 🛡️ " + ("Maintenance Center" if lang == 'en' else "مركز الصيانة الذكية"))
+        st.info("AI Sentinel is monitoring the platform for errors." if lang == 'en' else "الحارس الذكي يراقب المنصة بحثاً عن أي أخطاء.")
+        
+        # Test Button
+        if st.button("🧪 " + ("Trigger Test Error" if lang == 'en' else "تحفيز خطأ تجريبي"), key="global_sentinel_test"):
+            raise ValueError("AI Sentinel Test: This is a simulated crash to verify the guardian system.")
+        
+        # Load logs
+        try:
+            with open(self.log_path, 'r', encoding='utf-8') as f:
+                logs = json.load(f)
+        except:
+            logs = []
+            
+        if not logs:
+            st.success("No system errors detected recently." if lang == 'en' else "لم يتم رصد أي أخطاء في النظام مؤخراً.")
+            return
+            
+        for log in logs:
+            status_icon = '🔴' if log['status']=='new' else '🔍'
+            with st.expander(f"{status_icon} {log['type']}: {log['message'][:50]}... ({log['timestamp'][:16]})"):
+                st.code(log['traceback'], language='python')
+                
+                st.markdown("---")
+                col1, col2 = st.columns([1, 2])
+                
+                with col1:
+                    if st.button(f"Analyze with AI" if lang == 'en' else "تحليل بالذكاء الاصطناعي", key=f"analyze_{log['id']}"):
+                        with st.spinner("Gemini is diagnosing..."):
+                            if self.analyze_error(log['id']):
+                                st.success("Diagnosis Complete!" if lang == 'en' else "اكتمل التشخيص!")
+                                st.rerun()
+                                
+                with col2:
+                    if log['status'] == 'analyzed':
+                        st.markdown("**AI Diagnosis:**")
+                        st.write(log['diagnosis'])
+                        if log['suggested_fix']:
+                            st.markdown("**Suggested Fix:**")
+                            st.code(log['suggested_fix'], language='python')
+                            if st.button("Apply Fix (Coming Soon)" if lang == 'en' else "تطبيق الإصلاح (قريباً)", key=f"apply_{log['id']}"):
+                                st.info("Automatic patching is being calibrated." if lang == 'en' else "يتم الآن معايرة نظام الترقيع التلقائي.")
+
+    
     def __init__(self, log_path: str = "user_data/sentinel_logs.json"):
         self.log_path = Path(log_path)
         self._ensure_log_exists()

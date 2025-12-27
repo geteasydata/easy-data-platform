@@ -214,16 +214,32 @@ def main():
     if st.session_state.lang is None:
         st.session_state.lang = 'en'
     
-    # Sidebar Language Switcher - REMOVED for Landing Page
-    # (Will be available inside the apps if needed, or we keep top toggle globally)
-    
-    # Authenticate User
-    # Authenticate User - NON-BLOCKING for Landing Page
-    # if not auth.require_auth(st.session_state.lang):
-    #     return
-
-
     lang = st.session_state.lang
+    
+    # --- GLOBAL ADMIN OVERLAY ---
+    is_admin = False
+    if st.session_state.get("authenticated", False):
+        user = st.session_state.get("user_data", {})
+        is_admin = user.get('role') == 'admin' or st.session_state.get('username') == 'admin' or st.session_state.get('username') == 'Admin'
+
+    if 'show_global_maintenance' not in st.session_state:
+        st.session_state.show_global_maintenance = False
+
+    if is_admin:
+        with st.container():
+            col_admin1, col_admin2 = st.columns([6, 1])
+            with col_admin2:
+                st.session_state.show_global_maintenance = st.toggle("🛡️ " + ("Admin" if lang == 'en' else "الإدارة"), value=st.session_state.show_global_maintenance)
+        
+        if st.session_state.show_global_maintenance:
+            st.warning("⚠️ " + ("ADMIN MAINTENANCE MODE ACTIVE" if lang == 'en' else "نظام الصيانة للإدارة نشط"))
+            sentinel = get_sentinel()
+            sentinel.show_maintenance_ui(lang)
+            st.markdown("---")
+            if st.button("❌ " + ("Exit Maintenance" if lang == 'en' else "الخروج من الصيانة")):
+                st.session_state.show_global_maintenance = False
+                st.rerun()
+            st.stop() # Freeze normal UI when maintenance is open
 
     # 2. Path Selection Screen (The Core of "Easy Data")
     if 'app_mode' not in st.session_state:
