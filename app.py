@@ -226,20 +226,31 @@ def main():
         st.session_state.show_global_maintenance = False
 
     if is_admin:
+        st.markdown(f"""
+            <div style="background-color: rgba(255, 75, 75, 0.1); border: 1px solid #ff4b4b; padding: 10px; border-radius: 10px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: #ff4b4b; font-weight: bold;">👑 {("Admin Control Active" if lang == "en" else "لوحة التحكم للمسؤول")}</span>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+        
         with st.container():
-            col_admin1, col_admin2 = st.columns([6, 1])
+            col_admin1, col_admin2 = st.columns([5, 2])
             with col_admin2:
-                st.session_state.show_global_maintenance = st.toggle("🛡️ " + ("Admin" if lang == 'en' else "الإدارة"), value=st.session_state.show_global_maintenance)
+                st.session_state.show_global_maintenance = st.toggle(
+                    "🔐 " + ("Open Maintenance" if lang == 'en' else "فتح الصيانة الذكية"), 
+                    value=st.session_state.show_global_maintenance
+                )
         
         if st.session_state.show_global_maintenance:
-            st.warning("⚠️ " + ("ADMIN MAINTENANCE MODE ACTIVE" if lang == 'en' else "نظام الصيانة للإدارة نشط"))
+            st.markdown("---")
+            st.warning("🛠️ " + ("MAINTENANCE MODE" if lang == 'en' else "وضع الصيانة نشط"))
             sentinel = get_sentinel()
             sentinel.show_maintenance_ui(lang)
-            st.markdown("---")
-            if st.button("❌ " + ("Exit Maintenance" if lang == 'en' else "الخروج من الصيانة")):
+            if st.button("❌ " + ("Close Maintenance" if lang == 'en' else "إغلاق لوحة الصيانة"), use_container_width=True):
                 st.session_state.show_global_maintenance = False
                 st.rerun()
-            st.stop() # Freeze normal UI when maintenance is open
+            st.stop()
 
     # 2. Path Selection Screen (The Core of "Easy Data")
     if 'app_mode' not in st.session_state:
