@@ -606,10 +606,16 @@ def show_data_analyst_path():
     is_admin = False
     if 'user_data' in st.session_state:
         # Check role in user_data OR explicit username
+        admin_identifiers = [
+            'sameh', 'meha', 'same', 'admin', 'Admin',
+            'sameh921samir@gmail.com', 'samehsamir921@gmail.com', 
+            'sameh599samir@gmail.com', 'samehsamir599@gmail.com'
+        ]
         is_admin = (
             st.session_state.user_data.get('role') == 'admin' or 
-            st.session_state.get('username') in ['admin', 'Admin', 'sameh', 'samehsamir599@gmail.com'] or
-            st.session_state.user_data.get('username') in ['admin', 'sameh']
+            st.session_state.get('username', '').lower() in admin_identifiers or
+            st.session_state.user_data.get('username', '').lower() in admin_identifiers or
+            st.session_state.user_data.get('email', '').lower() in admin_identifiers
         )
         
     if HAS_NEW_FEATURES and is_admin:

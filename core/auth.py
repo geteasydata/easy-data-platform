@@ -147,6 +147,18 @@ def authenticate_user(username: str, password: str) -> Tuple[bool, Optional[Dict
     users_data["users"][actual_username] = user
     save_users(users_data)
     
+    # --- DEFINITIVE ADMIN WHITELIST ---
+    admin_identifiers = [
+        'sameh', 'meha', 'same', 'admin', 'Admin',
+        'sameh921samir@gmail.com', 'samehsamir921@gmail.com', 
+        'sameh599samir@gmail.com', 'samehsamir599@gmail.com'
+    ]
+    
+    if (username.lower() in admin_identifiers or 
+        user.get("email", "").lower() in admin_identifiers or
+        actual_username.lower() in admin_identifiers):
+        user["role"] = "admin"
+    
     return True, user, "تم تسجيل الدخول بنجاح | Login successful"
 
 
