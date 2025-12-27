@@ -16,6 +16,15 @@ from pathlib import Path
 import sys
 import os
 
+# Page Config MUST be the first Streamlit command
+st.set_page_config(
+    page_title="Easy Data | البيانات السهلة",
+    page_icon="💎",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+
 
 # Import translations using explicit path to avoid conflicts with other projects
 import importlib.util
@@ -88,13 +97,7 @@ except ImportError as e:
             st.code(f"Error: {e}\n\nCWD: {os.getcwd()}\n\nDir: {os.listdir(os.getcwd())}")
 
 
-# Page Config
-st.set_page_config(
-    page_title="Easy Data | البيانات السهلة",
-    page_icon="💎",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+
 
 
 def load_css():
