@@ -110,8 +110,8 @@ def load_css():
     # FORCE HIDE STREAMLIT BRANDING (Direct Injection)
     st.markdown("""
         <style>
-        /* Hide Header and Footer strictly */
-        header[data-testid="stHeader"] {
+        /* 1. Hide Header and Footer strictly */
+        header, .stApp > header {
             display: none !important;
             visibility: hidden !important;
         }
@@ -121,21 +121,29 @@ def load_css():
             visibility: hidden !important;
         }
         
-        footer {
+        footer, .stApp > footer {
             display: none !important;
             visibility: hidden !important;
         }
         
-        /* Hide Github Icon and Toolbar specifically */
-        .st-emotion-cache-15ecox0 { display: none !important; } /* Common wrapper */
+        /* 2. Hide Toolbar and Action Elements (The "Manage App" & GitHub buttons) */
         [data-testid="stToolbar"] { display: none !important; }
         [data-testid="stHeaderActionElements"] { display: none !important; }
+        .st-emotion-cache-15ecox0 { display: none !important; } 
+        .st-emotion-cache-1wbqy5l { display: none !important; }
         
-        /* Hide Decoration Bar */
+        /* 3. Hide The "Viewer Badge" (The bottom right profile/crown icons) */
+        .viewerBadge_container__1QSob { display: none !important; }
+        [data-testid="stStatusWidget"] { display: none !important; }
+        .stDeployButton { display: none !important; }
+        
+        /* 4. Hide Decoration Bar (The colored line at top) */
         div[data-testid="stDecoration"] { display: none !important; }
         
-        /* Hide Status Widgets */
-        div[data-testid="stStatusWidget"] { display: none !important; }
+        /* 5. Catch-all for any fixed bottom-right elements that are NOT our footer */
+        /* We target specific known Streamlit Cloud styles */
+        div[class*="viewerBadge"] { display: none !important; }
+        div[class*="stAction"] { display: none !important; }
         </style>
     """, unsafe_allow_html=True)
 
