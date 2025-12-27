@@ -2209,9 +2209,12 @@ def show_advanced_viz_tab(df):
         st.markdown("---")
         
         if chart_type == "Sunburst":
+            # Broaden categorical detection: any column with <= 25 unique values
+            cat_cols = [c for c in df.columns if df[c].nunique() <= 25]
+            
             cols = st.multiselect(
                 "Select Hierarchy Columns (Order matters)" if lang == 'en' else "اختر أعمدة التسلسل الهرمي (الترتيب مهم)",
-                [c for c in df.columns if df[c].dtype == 'object']
+                cat_cols
             )
             value_col = st.selectbox(
                 "Value Column" if lang == 'en' else "عمود القيمة",
@@ -2235,12 +2238,14 @@ def show_advanced_viz_tab(df):
                 st.plotly_chart(fig, use_container_width=True)
                 
         elif chart_type == "Sankey":
-            c1, c2, c3 = st.columns(3)
-            cat_cols = df.select_dtypes(include=['object']).columns
+            # Broaden categorical detection: any column with <= 25 unique values
+            cat_cols = [c for c in df.columns if df[c].nunique() <= 25]
+            
             num_cols = df.select_dtypes(include=[np.number]).columns
             
-            with c1: source = st.selectbox("Source", cat_cols, index=0)
-            with c2: target = st.selectbox("Target", cat_cols, index=1 if len(cat_cols)>1 else 0)
+            c1, c2, c3 = st.columns(3)
+            with c1: source = st.selectbox("Source", cat_cols, index=0 if len(cat_cols) > 0 else None)
+            with c2: target = st.selectbox("Target", cat_cols, index=1 if len(cat_cols)>1 else 0 if len(cat_cols) > 0 else None)
             with c3: value = st.selectbox("Value", num_cols)
             
             if source and target and value:

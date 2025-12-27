@@ -64,14 +64,24 @@ class AdvancedVisualizer:
         if len(agg_df) > 50:
             agg_df = agg_df.nlargest(50, value_col)
             
-        # Create labels
-        sources = agg_df[source_col].unique().tolist()
-        targets = agg_df[target_col].unique().tolist()
-        label_list = list(set(sources + targets))
+        # Create labels (handle case where source_col == target_col, which returns a DataFrame)
+        def get_unique(df_slice):
+            if isinstance(df_slice, pd.DataFrame):
+                return df_slice.iloc[:, 0].unique().tolist()
+            return df_slice.unique().tolist()
+            
+        sources = get_unique(agg_df[source_col])
+        targets = get_unique(agg_df[target_col])
+        label_list = list(sorted(list(set([str(s) for s in sources] + [str(t) for t in targets]))))
         
         # Create indices
-        source_indices = [label_list.index(s) for s in agg_df[source_col]]
-        target_indices = [label_list.index(t) for t in agg_df[target_col]]
+        def get_series(df_slice):
+            if isinstance(df_slice, pd.DataFrame):
+                return df_slice.iloc[:, 0]
+            return df_slice
+
+        source_indices = [label_list.index(str(s)) for s in get_series(agg_df[source_col])]
+        target_indices = [label_list.index(str(t)) for t in get_series(agg_df[target_col])]
         
         fig = go.Figure(data=[go.Sankey(
             node=dict(

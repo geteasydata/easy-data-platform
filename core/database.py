@@ -49,6 +49,17 @@ def get_supabase_config() -> Tuple[Optional[str], Optional[str]]:
     if not key:
         key = os.environ.get("SUPABASE_KEY")
     
+    # Validation: Check for empty or placeholder values
+    placeholders = [
+        "YOUR_SUPABASE_URL", "YOUR_SUPABASE_KEY", "SUPABASE_URL", "SUPABASE_KEY",
+        "https://your-project.supabase.co", "your_supabase_anon_key",
+        "your_gemini_api_key_here", "your_groq_api_key_here", "your_deepseek_api_key_here"
+    ]
+    if url in placeholders or not url:
+        url = None
+    if key in placeholders or not key:
+        key = None
+        
     return url, key
 
 
@@ -151,6 +162,8 @@ def create_user(
             return False, "فشل إنشاء الحساب | Failed to create account", None
             
     except Exception as e:
+        import logging
+        logging.error(f"Supabase create_user error: {str(e)}")
         return False, f"خطأ في قاعدة البيانات | Database error: {str(e)}", None
 
 
@@ -191,6 +204,8 @@ def authenticate_user(username: str, password: str) -> Tuple[bool, Optional[Dict
         return True, user, "تم تسجيل الدخول بنجاح | Login successful"
         
     except Exception as e:
+        import logging
+        logging.error(f"Supabase auth error: {str(e)}")
         return False, None, f"خطأ في قاعدة البيانات | Database error: {str(e)}"
 
 
