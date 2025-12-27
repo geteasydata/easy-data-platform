@@ -301,10 +301,13 @@ def main():
                     </div>
                 """, unsafe_allow_html=True)
                 
-                disabled_attr = not is_authenticated
-                if st.button("🔬 " + ("Start Scientific" if lang == 'en' else "ابدأ العلمي"), key="btn_scientist", use_container_width=True, disabled=disabled_attr):
-                    st.session_state.app_mode = 'scientist'
-                    st.rerun()
+                if st.button("🔬 " + ("Start Scientific" if lang == 'en' else "ابدأ العلمي"), key="btn_scientist", use_container_width=True):
+                    if is_authenticated:
+                        st.session_state.app_mode = 'scientist'
+                        st.rerun()
+                    else:
+                        st.toast("🔒 " + ("يرجى تسجيل الدخول أولاً للمتابعة" if lang == 'ar' else "Please login first to proceed"), icon="🔒")
+                        st.warning("🔒 " + ("يرجى تسجيل الدخول من النموذج المجاور للمتابعة" if lang == 'ar' else "Please login using the form to proceed"))
 
             with col_ana:
                 st.markdown(f"""
@@ -315,9 +318,13 @@ def main():
                     </div>
                 """, unsafe_allow_html=True)
                 
-                if st.button("📊 " + ("Start Analytical" if lang == 'en' else "ابدأ التحليلي"), key="btn_analyst", use_container_width=True, disabled=disabled_attr):
-                    st.session_state.app_mode = 'analyst'
-                    st.rerun()
+                if st.button("📊 " + ("Start Analytical" if lang == 'en' else "ابدأ التحليلي"), key="btn_analyst", use_container_width=True):
+                    if is_authenticated:
+                        st.session_state.app_mode = 'analyst'
+                        st.rerun()
+                    else:
+                        st.toast("🔒 " + ("يرجى تسجيل الدخول أولاً للمتابعة" if lang == 'ar' else "Please login first to proceed"), icon="🔒")
+                        st.warning("🔒 " + ("يرجى تسجيل الدخول من النموذج المجاور للمتابعة" if lang == 'ar' else "Please login using the form to proceed"))
             
             if not is_authenticated:
                 st.caption(f"🔒 {('يرجى تسجيل الدخول أولاً لفتح المسارات' if lang == 'ar' else 'Please login first to unlock paths')}")

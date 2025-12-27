@@ -286,15 +286,6 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
     # Guest Access Removed
     pass
     
-    # Language toggle
-    st.markdown("<br>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col2:
-        lang_label = "🌐 العربية" if lang == 'en' else "🌐 English"
-        if st.button(lang_label, key="lang_toggle_orig", use_container_width=True):
-            st.session_state.lang = 'ar' if lang == 'en' else 'en'
-            st.rerun()
-
     return None
 
 
