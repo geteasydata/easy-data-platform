@@ -442,30 +442,53 @@ def show_data_upload():
         
         if uploaded_file:
             try:
-                # Use common loader
-                loader = DataLoader() # Using local script import
-                # We need to bridge streamlit file to loader (or use pandas directly like before)
-                # The existing code used pandas directly. Let's stick to that for simplicity or use loader
-                # Loader handles file objects? No, it handles paths mostly. 
-                # Let's keep the direct pandas read for uploaded files to be safe, 
-                # OR save to temp. Keeping direct read as it was working.
-                if uploaded_file.name.endswith('.csv'):
-                    st.session_state.df = pd.read_csv(uploaded_file)
-                elif uploaded_file.name.endswith(('.xlsx', '.xls')):
-                    st.session_state.df = pd.read_excel(uploaded_file)
-                elif uploaded_file.name.endswith('.json'):
-                    st.session_state.df = pd.read_json(uploaded_file)
-                elif uploaded_file.name.endswith('.parquet'):
-                    st.session_state.df = pd.read_parquet(uploaded_file)
+                # Save file to temp for DuckDB processing
+                import os
+                temp_dir = PROJECT_ROOT / "temp_data"
+                temp_dir.mkdir(exist_ok=True)
                 
-                st.success(t('loaded_success', lang).format(len(st.session_state.df), len(st.session_state.df.columns)))
+                # Create a uniquely named temp file to avoid conflicts
+                safe_name = f"{datetime.now().strftime('%H%M%S')}_{uploaded_file.name}"
+                temp_path = temp_dir / safe_name
                 
-                # Preview
-                with st.expander(t('data_preview', lang), expanded=True):
-                    st.dataframe(st.session_state.df.head(10), use_container_width=True)
+                with open(temp_path, "wb") as f:
+                    f.write(uploaded_file.getbuffer())
                 
-                # Auto-transition to analysis tabs
-                st.rerun()
+                # Register with DuckDB
+                if 'duck_engine' not in st.session_state:
+                    from core.duck_engine import DuckDBEngine
+                    st.session_state.duck_engine = DuckDBEngine()
+                
+                # Check file size/lines quickly without loading everything
+                # Register the file content as a view
+                success = st.session_state.duck_engine.register_file(str(temp_path), table_name='current_data')
+                
+                if success:
+                    # Get robust stats and SAMPLE
+                    st.session_state.file_path = str(temp_path)
+                    
+                    # Log info
+                    stats = st.session_state.duck_engine.get_summary_stats('current_data')
+                    total_rows = stats.get('total_rows', 0)
+                    
+                    # Load Safe Sample (Max 100k for UI)
+                    if total_rows > 100000:
+                        st.info(f"🚀 Large dataset detected ({total_rows:,} rows). Optimized mode enabled using DuckDB.")
+                        st.session_state.df = st.session_state.duck_engine.get_sample('current_data', limit=100000)
+                    else:
+                        # Small enough to load fully
+                        st.session_state.df = st.session_state.duck_engine.query("SELECT * FROM current_data")
+                    
+                    st.success(t('loaded_success', lang).format(len(st.session_state.df), len(st.session_state.df.columns)))
+                    
+                    # Preview
+                    with st.expander(t('data_preview', lang), expanded=True):
+                        st.dataframe(st.session_state.df.head(10), use_container_width=True)
+                    
+                    # Auto-transition to analysis tabs
+                    st.rerun()
+                else:
+                    st.error("Failed to register data with analytics engine.")
             
             except Exception as e:
                 st.error(f"{t('error_loading', lang)}: {e}")
@@ -609,7 +632,9 @@ def show_analysis_tab(df):
     if st.button(t('run_analysis', lang), key="run_analysis"):
         with st.spinner(t('analyzing', lang)):
             analyzer = DataAnalyzer()
-            report = analyzer.analyze(df)
+            # Pass file path if available for DuckDB optimization
+            file_path = st.session_state.get('file_path')
+            report = analyzer.analyze(df, file_path=file_path)
             st.session_state.analysis_report = report
             st.session_state.analysis_complete = True
     
@@ -716,7 +741,9 @@ def show_insights_tab(df):
     if st.button(t('generate_insights', lang)):
         with st.spinner(t('generating_insights', lang)):
             analyzer = DataAnalyzer()
-            report = analyzer.analyze(df)
+            # Pass file path if available
+            file_path = st.session_state.get('file_path')
+            report = analyzer.analyze(df, file_path=file_path)
             
             insights_gen = InsightsGenerator(domain=domain, lang=lang)
             insights = insights_gen.generate_insights(df, analyzer.get_summary(), lang=lang)

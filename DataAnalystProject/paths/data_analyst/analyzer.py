@@ -80,20 +80,55 @@ class DataAnalyzer:
         self.correlation_threshold = correlation_threshold
         self.report: Optional[DataQualityReport] = None
         
-    def analyze(self, df: pd.DataFrame) -> DataQualityReport:
+    def analyze(self, df: pd.DataFrame, file_path: Optional[str] = None) -> DataQualityReport:
         """Perform comprehensive data analysis"""
-        logger.info(f"Starting analysis on dataset with {len(df)} rows and {len(df.columns)} columns")
+        # SAFEGUARD FOR MEMORY: If df is large, sample it for Pandas operations
+        ROW_LIMIT = 250000
+        is_sampled = False
         
-        # Basic stats
+        if len(df) > ROW_LIMIT:
+            try:
+                import streamlit as st
+                st.toast(f"📉 Auto-downsampled analysis to {ROW_LIMIT:,} rows")
+            except:
+                pass
+            df = df.sample(n=ROW_LIMIT, random_state=42)
+            is_sampled = True
+            
+        logger.info(f"Starting analysis. Shape: {df.shape}")
+        
+        # Basic stats (Default to Pandas)
         total_rows = len(df)
         total_columns = len(df.columns)
         total_missing = df.isnull().sum().sum()
-        missing_percent = (total_missing / (total_rows * total_columns)) * 100
-        duplicate_rows = df.duplicated().sum()
-        duplicate_percent = (duplicate_rows / total_rows) * 100 if total_rows > 0 else 0
         
-        # Memory usage
+        # DuckDB Optimization for EXACT Huge Data Stats
+        if file_path:
+            try:
+                from core.duck_engine import DuckDBEngine
+                engine = DuckDBEngine()
+                if engine.register_file(file_path, 'input_data'):
+                    stats = engine.get_summary_stats('input_data')
+                    
+                    # If file has more rows than our current df, use the exact numbers
+                    db_rows = stats.get('total_rows', 0)
+                    if db_rows > total_rows:
+                        total_rows = db_rows
+                        total_missing = stats.get('total_missing', total_missing)
+                        logger.info(f"Using DuckDB exact stats: {total_rows} rows")
+            except Exception as e:
+                logger.warning(f"DuckDB stats failed, falling back to pandas: {e}")
+
+        missing_percent = (total_missing / (total_rows * total_columns)) * 100 if total_rows > 0 else 0
+        duplicate_rows = df.duplicated().sum() # Computed on sample
+        duplicate_percent = (duplicate_rows / len(df)) * 100 if len(df) > 0 else 0
+        
+        # Memory usage estimate based on full size if sampled
         memory_bytes = df.memory_usage(deep=True).sum()
+        if total_rows > len(df):
+            ratio = total_rows / len(df)
+            memory_bytes = int(memory_bytes * ratio)
+
         if memory_bytes < 1024:
             memory_usage = f"{memory_bytes} B"
         elif memory_bytes < 1024**2:
