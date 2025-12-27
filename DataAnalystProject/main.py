@@ -643,8 +643,13 @@ def show_data_analyst_path():
         "📚 Knowledge Hub" if lang == 'en' else "📚 مركز المعرفة"
     ]
     
-    # Add Maintenance tab if sentinel is available
-    if HAS_NEW_FEATURES:
+    # Add Maintenance tab ONLY for Admins
+    is_admin = False
+    if 'user_data' in st.session_state:
+        # Check role in user_data OR explicit username
+        is_admin = st.session_state.user_data.get('role') == 'admin' or st.session_state.get('username') == 'admin' or st.session_state.get('username') == 'Admin'
+        
+    if HAS_NEW_FEATURES and is_admin:
         tabs.append("🛡️ Maintenance" if lang == 'en' else "🛡️ الصيانة الذكية")
         
     tab_list = st.tabs(tabs)
@@ -676,7 +681,7 @@ def show_data_analyst_path():
     with tab_list[8]:
         show_knowledge_hub(lang) # New function
         
-    if HAS_NEW_FEATURES:
+    if HAS_NEW_FEATURES and is_admin:
         with tab_list[9]:
             show_maintenance_tab()
 
