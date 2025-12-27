@@ -247,7 +247,16 @@ def load_uploaded_file(uploaded_file) -> Optional[pd.DataFrame]:
             return pd.read_json(uploaded_file)
             
         elif name.endswith('.parquet'):
-            return pd.read_parquet(uploaded_file)
+            try:
+                return pd.read_parquet(uploaded_file, engine='pyarrow')
+            except ImportError:
+                 # Fallback or strict error if pyarrow is missing
+                 # Usually Streamlit cloud includes it, but good to be safe or try fastparquet
+                try:
+                    return pd.read_parquet(uploaded_file, engine='fastparquet')
+                except:
+                     # If both fail, let pandas auto-detect or raise default error which is caught below
+                    return pd.read_parquet(uploaded_file)
             
         return None
         

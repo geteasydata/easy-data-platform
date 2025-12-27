@@ -214,8 +214,10 @@ def main():
     # (Will be available inside the apps if needed, or we keep top toggle globally)
     
     # Authenticate User
-    if not auth.require_auth(st.session_state.lang):
-        return
+    # Authenticate User - NON-BLOCKING for Landing Page
+    # if not auth.require_auth(st.session_state.lang):
+    #     return
+
 
     lang = st.session_state.lang
 
@@ -224,7 +226,8 @@ def main():
         st.session_state.app_mode = None
 
     if st.session_state.app_mode is None:
-        # Hide Sidebar specifically for Landing Page
+
+        # CSS to hide sidebar on this "merged" page
         st.markdown("""
         <style>
             [data-testid="stSidebar"] {display: none;}
@@ -249,33 +252,76 @@ def main():
         st.markdown(f"<p style='text-align: left; font-size: 1.1rem; color: #94a3b8; margin-top: -10px;'>{t('app_subtitle', lang)}</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
-        col_sci, col_ana = st.columns(2)
+        # ---------------------------------------------------------
+        # MERGED LAYOUT: Login (Left) | Paths (Right)
+        # ---------------------------------------------------------
         
-        with col_sci:
-            # Scientific Path Card
+        # Check if logged in
+        is_authenticated = st.session_state.get("authenticated", False)
+        
+        main_cols = st.columns([1, 1.5]) # Left: Auth (40%), Right: Cards (60%)
+        
+        # --- LEFT COLUMN: AUTH or USER INFO ---
+        with main_cols[0]:
             st.markdown(f"""
-                <div class="custom-card" style="text-align: center; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔬</div>
-                    <h2 style="color: #a5b4fc !important; font-size: 1.5rem; margin-bottom: 0.5rem;">{'Scientific Path' if lang == 'en' else 'المسار العلمي'}</h2>
-                    <p style="color: #cbd5e1 !important; font-size: 0.95rem; line-height: 1.5;">{'AutoML, Predictive Modeling, and Risk Discovery.<br>For replacing Data Science teams.' if lang == 'en' else 'التحليل التنبئي، بناء النماذج، واكتشاف المخاطر.<br>بديل فريق علوم البيانات.'}</p>
+                <div style="background: rgba(30, 41, 59, 0.5); padding: 20px; border-radius: 15px; border: 1px solid rgba(148, 163, 184, 0.1);">
+                    <h3 style="color: #e2e8f0; margin-top:0;">{'Account Access' if lang == 'en' else 'دخول الحساب'}</h3>
                 </div>
             """, unsafe_allow_html=True)
-            if st.button("🔬 " + ("Start Scientific Path" if lang == 'en' else "ابدأ المسار العلمي"), key="btn_scientist", use_container_width=True):
-                st.session_state.app_mode = 'scientist'
-                st.rerun()
+            
+            if is_authenticated:
+                user = st.session_state.get("user_data", {})
+                username = st.session_state.get("username", "User")
+                st.success(f"👋 {('مرحباً' if lang == 'ar' else 'Welcome')}, {user.get('name', username)}!")
                 
-        with col_ana:
-            # Analytical Path Card
+                auth.show_user_info(lang) # Shows plan, etc.
+                
+                st.markdown("---")
+                st.info("✅ " + ("يمكنك الآن اختيار المسار من الجهة المقابلة" if lang == 'ar' else "You can now select a path from the right panel"))
+            else:
+                # Show Login Form inline
+                auth.show_login_page(lang)
+        
+        # --- RIGHT COLUMN: PATH SELECTION ---
+        with main_cols[1]:
             st.markdown(f"""
-                <div class="custom-card" style="text-align: center; min-height: 250px; display: flex; flex-direction: column; justify-content: center;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
-                    <h2 style="color: #5eead4 !important; font-size: 1.5rem; margin-bottom: 0.5rem;">{'Analytical Path' if lang == 'en' else 'المسار التحليلي'}</h2>
-                    <p style="color: #cbd5e1 !important; font-size: 0.95rem; line-height: 1.5;">{'Traditional ETL, Dashboards, and Reports.<br>For replacing Analyst teams.' if lang == 'en' else 'تنظيف البيانات، لوحات المعلومات، والتقارير.<br>بديل فريق محللي البيانات.'}</p>
+                <div style="padding: 10px;">
+                    <h3 style="color: #e2e8f0; text-align: center;">{'Choose Your Path' if lang == 'en' else 'اختر مسارك'}</h3>
                 </div>
             """, unsafe_allow_html=True)
-            if st.button("📊 " + ("Start Analytical Path" if lang == 'en' else "ابدأ المسار التحليلي"), key="btn_analyst", use_container_width=True):
-                st.session_state.app_mode = 'analyst'
-                st.rerun()
+            
+            col_sci, col_ana = st.columns(2)
+            
+            with col_sci:
+                st.markdown(f"""
+                    <div class="custom-card" style="text-align: center; min-height: 250px; display: flex; flex-direction: column; justify-content: center; opacity: {1.0 if is_authenticated else 0.7};">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔬</div>
+                        <h2 style="color: #a5b4fc !important; font-size: 1.5rem; margin-bottom: 0.5rem;">{'Scientific Path' if lang == 'en' else 'المسار العلمي'}</h2>
+                        <p style="color: #cbd5e1 !important; font-size: 0.95rem; line-height: 1.5;">{'AutoML, Predictive Modeling, and Risk Discovery.' if lang == 'en' else 'التحليل التنبئي، بناء النماذج، واكتشاف المخاطر.'}</p>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                disabled_attr = not is_authenticated
+                if st.button("🔬 " + ("Start Scientific" if lang == 'en' else "ابدأ العلمي"), key="btn_scientist", use_container_width=True, disabled=disabled_attr):
+                    st.session_state.app_mode = 'scientist'
+                    st.rerun()
+
+            with col_ana:
+                st.markdown(f"""
+                    <div class="custom-card" style="text-align: center; min-height: 250px; display: flex; flex-direction: column; justify-content: center; opacity: {1.0 if is_authenticated else 0.7};">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <h2 style="color: #5eead4 !important; font-size: 1.5rem; margin-bottom: 0.5rem;">{'Analytical Path' if lang == 'en' else 'المسار التحليلي'}</h2>
+                        <p style="color: #cbd5e1 !important; font-size: 0.95rem; line-height: 1.5;">{'Traditional ETL, Dashboards, and Reports.' if lang == 'en' else 'تنظيف البيانات، لوحات المعلومات، والتقارير.'}</p>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                if st.button("📊 " + ("Start Analytical" if lang == 'en' else "ابدأ التحليلي"), key="btn_analyst", use_container_width=True, disabled=disabled_attr):
+                    st.session_state.app_mode = 'analyst'
+                    st.rerun()
+            
+            if not is_authenticated:
+                st.caption(f"🔒 {('يرجى تسجيل الدخول أولاً لفتح المسارات' if lang == 'ar' else 'Please login first to unlock paths')}")
+
         return
 
     # If Analyst path is chosen, we switch logic

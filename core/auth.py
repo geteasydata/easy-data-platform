@@ -219,15 +219,8 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
     """
     
     # Header with Logo (Styled via assets/style.css)
-    st.markdown("""
-    <div class="auth-container">
-        <div class="auth-header">
-            <div class="auth-logo">💎</div>
-            <h1>Easy Data</h1>
-            <p style="color: #94a3b8;">AI-Powered Data Analysis Platform</p>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # Removed header as it is now part of the main app layout
+    pass
     
     # Message handling
     if "login_message" not in st.session_state:
@@ -290,18 +283,8 @@ def show_login_page(lang: str = "ar") -> Optional[Dict]:
                 else:
                     st.warning("Please fill all fields" if lang == 'en' else "يرجى ملء جميع الحقول")
     
-    # Guest Access Button
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("🎭 Try as Guest", use_container_width=True, key="guest_btn_orig"):
-            st.session_state.update({
-                "authenticated": True,
-                "username": "guest",
-                "user_data": {"name": "Guest", "plan": "free", "role": "guest"}
-            })
-            st.rerun()
+    # Guest Access Removed
+    pass
     
     # Language toggle
     st.markdown("<br>", unsafe_allow_html=True)
