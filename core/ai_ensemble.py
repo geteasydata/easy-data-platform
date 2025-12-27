@@ -99,7 +99,7 @@ class AIEnsemble:
             try:
                 genai.configure(api_key=self.gemini_key)
                 self.providers['gemini'] = {
-                    'model': genai.GenerativeModel('gemini-2.5-flash'),
+                    'model': genai.GenerativeModel('gemini-1.5-flash'),
                     'name': 'Gemini',
                     'emoji': '✨'
                 }
@@ -127,7 +127,22 @@ class AIEnsemble:
             self.log(f"✅ Gemini Key updated by user")
         except Exception as e:
             self.log(f"⚠️ Failed to update Gemini Key: {e}")
-    
+
+    def chat(self, prompt: str, context: Dict[str, Any] = None) -> str:
+        """
+        Generic chat interface for any task. 
+        Uses Gemini 1.5 Pro/Flash if available for large context, 
+        otherwise falls back to the full ensemble.
+        """
+        if context and context.get('type') == 'maintenance_diagnosis':
+             # For maintenance, we prioritize Gemini due to context window
+             if 'gemini' in self.providers:
+                 return self._call_gemini(prompt)
+        
+        # Default: Use all and combine
+        responses = self._call_all_providers(prompt)
+        return self._combine_insights(responses)
+
     def log(self, message: str):
         """Add log message."""
         self.log_messages.append(message)

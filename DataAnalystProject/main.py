@@ -65,6 +65,7 @@ try:
     from paths.data_scientist.what_if_analysis import WhatIfSimulator
     from paths.reports.excel_generator import create_excel_report
     from paths.reports.powerbi_generator import create_powerbi_package
+    from core.sentinel import get_sentinel
     HAS_NEW_FEATURES = True
 except ImportError:
     HAS_NEW_FEATURES = False
@@ -562,11 +563,54 @@ def show_advanced_viz_tab(df):
     st.info("🚧 Advanced Visualization: Coming Soon")
     st.caption("This module is under development.")
 
+def show_maintenance_tab():
+    """Admin interface for monitoring and repairing the app"""
+    lang = get_lang()
+    sentinel = get_sentinel()
+    
+    st.markdown("### 🛡️ " + ("Maintenance Center" if lang == 'en' else "مركز الصيانة الذكية"))
+    st.info("AI Sentinel is monitoring the platform for errors." if lang == 'en' else "الحارس الذكي يراقب المنصة بحثاً عن أي أخطاء.")
+    
+    # Load logs
+    try:
+        with open(sentinel.log_path, 'r', encoding='utf-8') as f:
+            logs = json.load(f)
+    except:
+        logs = []
+        
+    if not logs:
+        st.success("No system errors detected recently." if lang == 'en' else "لم يتم رصد أي أخطاء في النظام مؤخراً.")
+        return
+        
+    for log in logs:
+        with st.expander(f"{'🔴' if log['status']=='new' else '🔍'} {log['type']}: {log['message'][:50]}... ({log['timestamp'][:16]})"):
+            st.code(log['traceback'], language='python')
+            
+            st.markdown("---")
+            col1, col2 = st.columns([1, 2])
+            
+            with col1:
+                if st.button(f"Analyze with AI" if lang == 'en' else "تحليل بالذكاء الاصطناعي", key=f"analyze_{log['id']}"):
+                    with st.spinner("Gemini is diagnosing..."):
+                        if sentinel.analyze_error(log['id']):
+                            st.success("Diagnosis Complete!" if lang == 'en' else "اكتمل التشخيص!")
+                            st.rerun()
+                            
+            with col2:
+                if log['status'] == 'analyzed':
+                    st.markdown("**AI Diagnosis:**")
+                    st.write(log['diagnosis'])
+                    if log['suggested_fix']:
+                        st.markdown("**Suggested Fix:**")
+                        st.code(log['suggested_fix'], language='python')
+                        if st.button("Apply Fix (Coming Soon)" if lang == 'en' else "تطبيق الإصلاح (قريباً)", key=f"apply_{log['id']}"):
+                            st.info("Automatic patching is being calibrated." if lang == 'en' else "يتم الآن معايرة نظام الترقيع التلقائي.")
+
+
 def show_knowledge_hub(lang):
     """Placeholder for Knowledge Hub"""
     st.info("🚧 Knowledge Hub: Coming Soon" if lang == 'en' else "🚧 مركز المعرفة: قريباً")
     st.caption("This module is under development.")
-
 
 def show_data_analyst_path():
     """Show Data Analyst path interface"""
@@ -583,7 +627,7 @@ def show_data_analyst_path():
     df = st.session_state.df
     
     # Analysis tabs - Enhanced
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
+    tabs = [
         t('tab_analysis', lang), 
         "🔍 Auto EDA" if lang == 'en' else "🔍 تحليل تلقائي",
         "📝 NLP" if lang == 'en' else "📝 تحليل نصوص",
@@ -593,34 +637,44 @@ def show_data_analyst_path():
         t('tab_dashboard', lang), 
         t('tab_export', lang),
         "📚 Knowledge Hub" if lang == 'en' else "📚 مركز المعرفة"
-    ])
+    ]
     
-    with tab1:
+    # Add Maintenance tab if sentinel is available
+    if HAS_NEW_FEATURES:
+        tabs.append("🛡️ Maintenance" if lang == 'en' else "🛡️ الصيانة الذكية")
+        
+    tab_list = st.tabs(tabs)
+    
+    with tab_list[0]:
         show_analysis_tab(df)
     
-    with tab2:
+    with tab_list[1]:
         show_auto_eda_tab(df)
         
-    with tab3:
+    with tab_list[2]:
         show_nlp_tab(df)
         
-    with tab4:
+    with tab_list[3]:
         show_advanced_viz_tab(df)
         
-    with tab5:
+    with tab_list[4]:
         show_cleaning_tab(df)
     
-    with tab6:
+    with tab_list[5]:
         show_insights_tab(df)
     
-    with tab7:
+    with tab_list[6]:
         show_dashboard_tab(df)
     
-    with tab8:
+    with tab_list[7]:
         show_export_tab(df)
 
-    with tab9:
+    with tab_list[8]:
         show_knowledge_hub(lang) # New function
+        
+    if HAS_NEW_FEATURES:
+        with tab_list[9]:
+            show_maintenance_tab()
 
 
 def show_analysis_tab(df):
@@ -2367,17 +2421,33 @@ def main():
     """Main application entry point"""
     init_session_state()
     
-    # Direct routing
-    if st.session_state.path == 'analyst':
-        show_data_analyst_path()
-    elif st.session_state.path == 'scientist':
-        show_data_scientist_path()
-    else:
-        # Default home screen
-        show_path_selection()
+    try:
+        # Direct routing
+        if st.session_state.path == 'analyst':
+            show_data_analyst_path()
+        elif st.session_state.path == 'scientist':
+            show_data_scientist_path()
+        else:
+            show_path_selection()
+    except Exception as e:
+        if HAS_NEW_FEATURES:
+            sentinel = get_sentinel()
+            log_id = sentinel.log_error(e, context={
+                "path": st.session_state.get('path'),
+                "domain": st.session_state.get('domain'),
+                "step": "main_routing"
+            })
+            st.error(f"⚠️ A system error occurred. AI Sentinel has recorded this (ID: {log_id}) for immediate maintenance.")
+            if st.button("Go to Maintenance Center" if get_lang() == 'en' else "الذهاب لمركز الصيانة"):
+                st.session_state.path = 'analyst'
+                st.rerun()
+        else:
+            st.error(f"Critical Error: {e}")
 
     # Show AI Assistant if data is loaded
     if st.session_state.df is not None:
+        if HAS_NEW_FEATURES:
+            show_knowledge_hub(get_lang())
         show_ai_chat(st.session_state.df)
 
 

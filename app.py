@@ -42,6 +42,7 @@ from core.data_loader import load_uploaded_file
 from core.auto_ml import AutoML
 from core.ai_ensemble import get_ensemble
 from core.chief_data_scientist import get_chief_data_scientist, ApprovalStatus
+from core.sentinel import get_sentinel
 import core.auth as auth
 from reports.excel_output import create_excel_report
 from reports.powerbi_export import create_powerbi_package
@@ -334,22 +335,34 @@ def main():
 
         return
 
-    # If Analyst path is chosen, we switch logic
-    if st.session_state.app_mode == 'analyst':
-        try:
-            # Initialize ALL required session state for DataAnalystProject
-            from DataAnalystProject.main import init_session_state, show_data_analyst_path
-            init_session_state()  # Initialize all required variables
-            st.session_state.path = 'analyst'  # Set the path after init
-            show_data_analyst_path()
-        except Exception as e:
-            st.error(f"Error loading Analyst Path: {e}")
-            if st.button("Reset"):
-                st.session_state.app_mode = None
-                st.rerun()
-        return
+    try:
+        # If Analyst path is chosen, we switch logic
+        if st.session_state.app_mode == 'analyst':
+            try:
+                # Initialize ALL required session state for DataAnalystProject
+                from DataAnalystProject.main import init_session_state, show_data_analyst_path
+                init_session_state()  # Initialize all required variables
+                st.session_state.path = 'analyst'  # Set the path after init
+                show_data_analyst_path()
+            except Exception as e:
+                sentinel = get_sentinel()
+                log_id = sentinel.log_error(e, context={"path": "analyst_startup"})
+                st.error(f"Error loading Analyst Path: {e}")
+                st.info(f"AI Sentinel ID: {log_id}")
+                if st.button("Reset"):
+                    st.session_state.app_mode = None
+                    st.rerun()
+            return
 
-    # Scientist Path (Original AI Expert Flow continues below)
+        # Scientist Path (Original AI Expert Flow continues below)
+        # ... (rest of the scientist path)
+    except Exception as e:
+        sentinel = get_sentinel()
+        log_id = sentinel.log_error(e, context={"path": st.session_state.get('app_mode')})
+        st.error(f"⚠️ A critical error occurred. AI Sentinel has recorded this (ID: {log_id}).")
+        if st.button("Back to Home" if lang == 'en' else "العودة للرئيسية"):
+            st.session_state.app_mode = None
+            st.rerun()
     
     lang = st.session_state.lang
     
