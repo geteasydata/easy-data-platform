@@ -47,26 +47,11 @@ class AIEnsemble:
         self.providers = {}
         self.log_messages = []
         
-        # Load keys from secrets (safe for Cloud and Local)
-        # Fallback to None if not found preventing hardcoded leaks
-        # Helper to get secret safely from multiple locations
-        def get_secret(key_name):
-            # 1. Try nested [api_keys] section (Standard)
-            try:
-                return st.secrets["api_keys"][key_name]
-            except:
-                pass
-            # 2. Try root level (User mistake fallback)
-            try:
-                return st.secrets[key_name]
-            except:
-                pass
-            # 3. Try os environment (Local dev fallback)
-            return os.environ.get(key_name)
-
-        self.groq_key = get_secret("GROQ_API_KEY")
-        self.deepseek_key = get_secret("DEEPSEEK_API_KEY")
-        self.gemini_key = get_secret("GEMINI_API_KEY")
+        from core.config_utils import get_api_key
+        
+        self.groq_key = get_api_key("GROQ_API_KEY")
+        self.deepseek_key = get_api_key("DEEPSEEK_API_KEY")
+        self.gemini_key = get_api_key("GEMINI_API_KEY")
 
         
         # Setup Groq

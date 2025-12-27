@@ -53,18 +53,23 @@ class AIAssistant:
                  model: str = 'gemini',
                  lang: str = 'en'):
         
+        from core.config_utils import get_api_key
         self.lang = lang
         self.model = model
-        self.api_key = api_key or os.environ.get('GOOGLE_API_KEY') or os.environ.get('OPENAI_API_KEY') or self.DEFAULT_GEMINI_KEY
+        self.api_key = api_key or get_api_key('GEMINI_API_KEY') or get_api_key('GOOGLE_API_KEY') or get_api_key('OPENAI_API_KEY')
         
         self._setup_model()
     
     def _setup_model(self):
         """Setup AI model"""
         if self.model == 'gemini' and HAS_GEMINI and self.api_key:
-            genai.configure(api_key=self.api_key)
-            self.client = genai.GenerativeModel('gemini-2.5-flash')
-            self.available = True
+            try:
+                genai.configure(api_key=self.api_key)
+                self.client = genai.GenerativeModel('gemini-1.5-flash')
+                self.available = True
+            except Exception as e:
+                print(f"Gemini Setup Error: {e}")
+                self.available = False
         elif self.model == 'openai' and HAS_OPENAI and self.api_key:
             openai.api_key = self.api_key
             self.client = openai

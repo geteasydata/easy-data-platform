@@ -1383,4 +1383,14 @@ def show_results(data, lang):
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        # Catch-all for any top-level crash
+        from core.sentinel import get_sentinel
+        sentinel = get_sentinel()
+        log_id = sentinel.log_error(e, context={"path": "global_app_crash"})
+        
+        st.error(f"⚠️ A critical system error occurred. AI Sentinel (ID: {log_id}) is on the case.")
+        if st.button("Restart App"):
+            st.rerun()
